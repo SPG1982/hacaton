@@ -1,0 +1,17 @@
+.wrapper {
+    /*background: aqua;*/
+    /*height: 60px;*/
+ }
+
+.navLink {
+    /*font-size: 20px;*/
+    /*color: white;*/
+    /*background-color: yellow;*/
+    border-radius: 10px;
+    margin: 0px 3px 0px 3px;
+}
+
+.button {
+    margin: 3px 3px 3px 3px;
+}
+

@@ -1,0 +1,26 @@
+.ant-menu-item-active {
+    background-color: transparent !important;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
+    background-color: transparent !important;
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: red !important;
+    /*margin: 0px;*/
+}
+.ant-layout-sider-trigger {
+    height: 50px;
+}
+
+.ant-menu-vertical .ant-menu-item:not(:last-child),
+.ant-menu-vertical-left .ant-menu-item:not(:last-child),
+.ant-menu-vertical-right .ant-menu-item:not(:last-child),
+.ant-menu-inline .ant-menu-item:not(:last-child) {
+    margin: 0px;
+}
+
+.ant-card-body {
+    padding: 12px;
+}

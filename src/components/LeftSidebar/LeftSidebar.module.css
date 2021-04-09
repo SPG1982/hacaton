@@ -1,0 +1,12 @@
+.logo {
+ height: 35.45px;
+ margin: 3px;
+ background: #001529;
+ font-size: 22px;
+ color: white;
+ text-align: center;
+}
+
+.site-layout .site-layout-background {
+ background: #fff;
+}
