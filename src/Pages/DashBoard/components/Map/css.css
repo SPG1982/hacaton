@@ -1,0 +1,15 @@
+.mapGps {
+    border: 1px solid blue;
+    /*width: 100%;*/
+    /*height: calc(100vh - 120px);*/
+    height: 300px;
+}
+
+.leaflet-tooltip {
+    margin-left: -15px;
+}
+
+.leaflet-routing-collapse-btn {
+    left: 2px !important;
+    top: -2px !important;
+}

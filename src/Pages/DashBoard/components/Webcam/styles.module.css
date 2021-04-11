@@ -1,0 +1,11 @@
+.displayFlex {
+    display: flex;
+}
+
+.justifyCenter {
+    justify-content: center;
+}
+
+.absolute {
+    position: absolute;
+}
