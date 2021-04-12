@@ -9,7 +9,8 @@ import {
     WarningOutlined,
     SettingOutlined,
     WechatOutlined,
-    FullscreenExitOutlined
+    FullscreenExitOutlined,
+    GlobalOutlined
 
 } from '@ant-design/icons';
 import {Link, withRouter} from "react-router-dom";
@@ -37,6 +38,9 @@ const LeftSidebar = (props) => {
                     </Menu.Item>
                     <Menu.Item key="/dashboard" icon={<WechatOutlined/>}>
                         <Link to="/dashboard">+ЗАЯВЛЕНИЕ+</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/police" icon={<GlobalOutlined />}>
+                        <Link to="/police">+КАРТА НАРЯДОВ+</Link>
                     </Menu.Item>
                     <Menu.Item key="/about" icon={<DesktopOutlined/>}>
                         <Link to="/about">О проекте</Link>

@@ -7,6 +7,7 @@ import * as faceApi from "face-api.js";
 
 const Webcam = (props) => {
     const [Init, setInit] = useState(false);
+    const [find, setFind] = useState(false);
     const videoRef = useRef()
     const canvasRef = useRef()
 
@@ -62,6 +63,7 @@ const Webcam = (props) => {
                 drawBox.draw(canvasRef.current);
                 if (word(result.toString()) == 'Pavel') {
                     console.log(word(result.toString()));
+                    setFind('Смагин Павел')
                 }
 
                 function word(str) {
@@ -99,7 +101,24 @@ const Webcam = (props) => {
         <>
             {Init ? <h2 style={{textAlign: 'center'}}>Модуль камеры запущен</h2> :
                 <h2 style={{textAlign: 'center'}}>Активация модуля распознавания</h2>}
-            <div className={styles.displayFlex + ' ' + styles.justifyCenter} style={{textAlign: 'center'}}>
+
+
+            <div className={styles.displayFlex + ' ' + styles.justifyCenter}
+                 style={{textAlign: 'center', position: 'relative'}}>
+                {!find && <div style={{
+                    padding: '3px',
+                    position: 'absolute',
+                    backgroundColor: 'red',
+                    color: 'white',
+                    fontSize: '20px'
+                }}>Личность не установлена</div>}
+                {find && <div style={{
+                    padding: '3px',
+                    position: 'absolute',
+                    backgroundColor: 'yellow',
+                    color: 'black',
+                    fontSize: '20px'
+                }}>Личность установлена: {find}</div>}
                 <video ref={videoRef} autoPlay muted width="400px" height="300px"
                        style={{border: '1px solid black', margin: 'auto'}}
                        onPlay={handleVideoOnPlay}
@@ -110,28 +129,6 @@ const Webcam = (props) => {
     )
 }
 
-
-const Container = (props) => {
-
-    return (
-        <>
-            <Webcam/>
-        </>
-    );
-}
-
-let mapStateToProps = (state) => {
-    return {
-        app: state.app,
-    }
-}
-
-let mapDispatchToPropsLite =
-    {}
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToPropsLite),
-    withRouter
-)(Container)
+export default Webcam
 
 

@@ -8,9 +8,9 @@ const Form = (props) => {
     return (
         <>
             <div style={{width: '95%', height: '400px', margin: 'auto'}}>
-                <h2 style={{textAlign: 'center'}}>Итоговая форма</h2>
-                <div style={{border: '1px solid black', width: '100%', height: '100%'}}>
-                    В РАЗРАБОТКЕ
+                <h2 style={{textAlign: 'center'}}>Ориентировка</h2>
+                <div style={{padding: '5px', border: '1px solid black', width: '100%', height: '100%', fontSize: '18px', textAlign: 'justify'}}>
+                    В данном окне будет формироваться краткая информация о происшествии (ориентировка). В зависимости от показаний будет квалифицироваться статья УК РФ.
                 </div>
             </div>
         </>

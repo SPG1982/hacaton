@@ -16,7 +16,7 @@ const Dialog = (props) => {
                     {props.questions.map((q, i) => {
                         return (
                             <div key={i}>
-                                <div key={q + i} style={{margin: '3px', fontSize: '20px'}}><span style={{
+                                <div key={q + i} style={{padding: '5px', fontSize: '20px'}}><span style={{
                                     padding: '3px',
                                     backgroundColor: 'blue',
                                     color: 'white',
@@ -24,7 +24,7 @@ const Dialog = (props) => {
                                     borderRadius: '5px'
                                 }}>Вопрос дежурного:</span> {q}</div>
                                 {props.answers[i] &&
-                                <div key={props.answers[i] + i} style={{margin: '3px', fontSize: '20px'}}><span style={{
+                                <div key={props.answers[i] + i} style={{padding: '5px', fontSize: '20px'}}><span style={{
                                     padding: '3px',
                                     backgroundColor: 'red',
                                     color: 'white',
@@ -36,6 +36,10 @@ const Dialog = (props) => {
                             </div>
                         )
                     })}
+
+                    {props.questions.length == 0 &&
+                    <div style={{padding: '5px', textAlign: 'justify', fontSize: '18px'}}>В данном окне подробно
+                        излагается диалог между заявителем и дежурной частью.</div>}
 
                 </div>
             </div>
