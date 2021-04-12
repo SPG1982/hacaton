@@ -142,8 +142,8 @@ const Map = (props) => {
                 <Click/>
                 <Circle center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} pathOptions={{fillColor: 'red'}}
                         radius={200}/>
-                <Route/>
-                <Search/>
+                {/*<Route/>*/}
+                {/*<Search/>*/}
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

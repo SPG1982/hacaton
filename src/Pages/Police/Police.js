@@ -14,7 +14,7 @@ import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
-import {addAnswer, addQuestion, setAudio} from "../../redux/reducers/app-reducer";
+import {addAnswer, addQuestion, setAudio, setUser} from "../../redux/reducers/app-reducer";
 
 
 const Police = (props) => {
@@ -116,7 +116,15 @@ const Police = (props) => {
 // ----------------------
     return (
         <>
-            <h2 style={{textAlign: 'center'}}>Местоположение нарядов</h2>
+            <div style={{display: "flex", justifyContent: 'space-between', margin: '5px'}}>
+                <div style={{margin: 'auto'}}>
+                    <h2 style={{textAlign: 'center', display: 'inline'}}>Местоположение нарядов</h2>
+                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}} onChange={() => {
+                    }} value="Наряд №1"/>
+                </div>
+            </div>
+
+
             <MapContainer
                 id="mapJS"
                 className='mapGpsPolice'
@@ -127,8 +135,8 @@ const Police = (props) => {
                 <Click/>
                 <Circle center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} pathOptions={{fillColor: 'red'}}
                         radius={200}/>
-                <Route/>
-                <Search/>
+                {/*<Route/>*/}
+                {/*<Search/>*/}
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -187,7 +195,7 @@ let mapStateToProps = (state) => {
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio}
+    {addAnswer, addQuestion, setAudio, setUser}
 
 
 export default compose(

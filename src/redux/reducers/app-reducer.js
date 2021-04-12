@@ -2,13 +2,15 @@ const APP_INITIALIZED = 'app/APP_INITIALIZED'
 const QUESTIONS = 'app/QUESTIONS'
 const ANSWERS = 'app/ANSWERS'
 const AUDIO = 'app/AUDIO'
+const USER = 'app/USER'
 
 
 let initialState = {
     initialized: false,
     audio: 'speech',
     questions: [],
-    answers: []
+    answers: [],
+    user: ''
 }
 
 export const AppReducer = (state = initialState, action) => {
@@ -16,6 +18,10 @@ export const AppReducer = (state = initialState, action) => {
 
         case APP_INITIALIZED: {
             return {...state, initialized: true}
+        }
+
+        case USER: {
+            return {...state, user: action.user}
         }
 
         case AUDIO: {
@@ -49,6 +55,10 @@ export const initialize = () => (dispatch) => {
 
 export const addAnswer = (answer) => {
     return {type: ANSWERS, answer}
+}
+
+export const setUser = (user) => {
+    return {type: USER, user}
 }
 
 export const addQuestion = (question) => {

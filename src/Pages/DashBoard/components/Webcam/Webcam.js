@@ -10,6 +10,7 @@ const Webcam = (props) => {
     const [find, setFind] = useState(false);
     const videoRef = useRef()
     const canvasRef = useRef()
+    const [isMounted, setMounted] = useState(true)
 
 
     useEffect(() => {
@@ -25,6 +26,9 @@ const Webcam = (props) => {
             ]).then(startVideo).then(() => setInit(true));
         }
         loadModels();
+        return () => {
+            setMounted(false)
+        }
     }, [])
 
     const startVideo = () => {
@@ -39,42 +43,43 @@ const Webcam = (props) => {
 
     const handleVideoOnPlay = async () => {
         const labeledFaceDescriptors = await loadLabeledImages();
+        console.log('Обучение модели прошло')
         const faceMatcher = new faceApi.FaceMatcher(labeledFaceDescriptors, 0.5);
         canvasRef.current.innerHTML = faceApi.createCanvasFromMedia(videoRef.current)
         faceApi.matchDimensions(canvasRef.current, {width: 400, height: 300});
 
         setInterval(async () => {
-            const detections = await faceApi.detectAllFaces(videoRef.current, new faceApi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender().withFaceExpressions().withFaceDescriptors();
-            const resizedDetections = faceApi.resizeResults(detections, {width: 400, height: 300});
+            try {
+                const detections = await faceApi.detectAllFaces(videoRef.current, new faceApi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender().withFaceExpressions().withFaceDescriptors();
+                const resizedDetections = faceApi.resizeResults(detections, {width: 400, height: 300});
+
+                canvasRef.current.getContext('2d').clearRect(0, 0, 400, 300);
+                faceApi.draw.drawDetections(canvasRef.current, resizedDetections);
+                faceApi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+                faceApi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+                //faceApi.draw.draw(canvasRef.current, resizedDetections);
 
 
-            canvasRef.current.getContext('2d').clearRect(0, 0, 400, 300);
-            faceApi.draw.drawDetections(canvasRef.current, resizedDetections);
-            faceApi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-            faceApi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-            //faceApi.draw.draw(canvasRef.current, resizedDetections);
+                // console.log (resizedDetections)
+                const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor));
+                results.forEach((result, i) => {
+                    const box = resizedDetections[i].detection.box;
+                    const drawBox = new faceApi.draw.DrawBox(box, {label: result.toString()});
+                    drawBox.draw(canvasRef.current);
+                    if (word(result.toString()) == 'Pavel') {
+                        console.log(word(result.toString()));
+                        setFind('Смагин Павел')
+                    }
 
-
-            // console.log (resizedDetections)
-            const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor));
-            results.forEach((result, i) => {
-                const box = resizedDetections[i].detection.box;
-                const drawBox = new faceApi.draw.DrawBox(box, {label: result.toString()});
-                drawBox.draw(canvasRef.current);
-                if (word(result.toString()) == 'Pavel') {
-                    console.log(word(result.toString()));
-                    setFind('Смагин Павел')
-                }
-
-                function word(str) {
-                    let ars = str.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '').replace(/\s+/gi, ', ');
-                    return ars;
-                }
-            })
-
-
+                    function word(str) {
+                        let ars = str.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '').replace(/\s+/gi, ', ');
+                        return ars;
+                    }
+                })
+            } catch (e) {
+                console.error(e.message)
+            }
             //console.log(detections)
-
         }, 100)
     }
 
