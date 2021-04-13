@@ -42,6 +42,9 @@ const LeftSidebar = (props) => {
                     <Menu.Item key="/police" icon={<GlobalOutlined />}>
                         <Link to="/police">+КАРТА НАРЯДОВ+</Link>
                     </Menu.Item>
+                    <Menu.Item key="/tf" icon={<GlobalOutlined />}>
+                        <Link to="/tf">+TF+</Link>
+                    </Menu.Item>
                     <Menu.Item key="/about" icon={<DesktopOutlined/>}>
                         <Link to="/about">О проекте</Link>
                     </Menu.Item>

@@ -15,7 +15,7 @@ const Webcam = (props) => {
 
     useEffect(() => {
         const loadModels = async () => {
-            const MODEL_URL = process.env.PUBLIC_URL + '/facesModels';
+            const MODEL_URL = process.env.PUBLIC_URL + '/facesApi/models';
             Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                 faceApi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -89,7 +89,7 @@ const Webcam = (props) => {
             labels.map(async label => {
                 let descriptions = [];
                 for (let i = 1; i <= 2; i++) {
-                    const img = await faceApi.fetchImage(process.env.PUBLIC_URL + '/labeledImages/' + label + '/' + i + '.jpg');
+                    const img = await faceApi.fetchImage(process.env.PUBLIC_URL + '/facesApi/labeledImages/' + label + '/' + i + '.jpg');
                     //const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`);
                     const detections = await faceApi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
                     descriptions.push(detections.descriptor);
