@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import DashBoard from './Pages/DashBoard/DashBoard'
 import Police from "./Pages/Police/Police";
 import Tf from "./Pages/Tf/Tf";
+import Brain from "./Pages/Brain/Brain";
 
 function App(props) {
   return (
@@ -17,6 +18,7 @@ function App(props) {
             <Route path="/dashboard" component={DashBoard}/>
             <Route path="/police" component={Police}/>
             <Route path="/tf" component={Tf}/>
+            <Route path="/brain" component={Brain}/>
             <Route path="/" component={Main}/>
             <Route render={() => <div>404 NOT FOUND</div>}/>
         </Switch>

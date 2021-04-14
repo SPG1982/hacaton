@@ -5,7 +5,6 @@ import useInterval from '@use-it/interval';
 import './css.css'
 import Images from './Images';
 import Chart from './Chart';
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 
