@@ -5,10 +5,15 @@
   "dependencies": {
     "axios": "^0.19.2",
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "peer": "^0.6.1",
+    "peerjs": "^1.3.2",
+    "uuid": "^8.1.0"
   },
   "scripts": {
-    "server": "nodemon +server-socket.js"
+    "socket": "nodemon +server-socket.js",
+    "socketAll": "nodemon server-socket-all.js",
+    "peerjs": "nodemon +server-peer.js"
   },
   "browserslist": {
     "production": [

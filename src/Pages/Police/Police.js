@@ -15,8 +15,9 @@ import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
 import {addAnswer, addQuestion, setAudio, setModal, setUser} from "../../redux/reducers/app-reducer";
-import socket from "../../components/Socket/Socket";
+// import socket from "../../components/Socket/Socket";
 import {ModalView} from "../../components/Modals/ModalView";
+import io from "socket.io-client";
 
 
 const Police = (props) => {
@@ -24,16 +25,17 @@ const Police = (props) => {
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
     const [modal, setModal] = useState(false);
+    const socket = useRef();
 
     let mapJS
     let mapRef = useRef()
-
+    socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
     // -------------------------- Первоначальная установка GPS
     const [crd, setCrd] = useState(false);
 
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
-        socket.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
+        socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
         //console.log('GPS')
     }
 
@@ -58,7 +60,7 @@ const Police = (props) => {
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
         setInterval(() => {
-            socket.emit('GPS', {'user': props.user, 'x': 1, 'y': 2})
+            socket.current.emit('GPS', {'user': props.user, 'x': 1, 'y': 2})
         }, 5000);
 
 

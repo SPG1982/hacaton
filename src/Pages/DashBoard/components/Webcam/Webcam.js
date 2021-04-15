@@ -10,6 +10,7 @@ const Webcam = (props) => {
     const [find, setFind] = useState(false);
     const videoRef = useRef()
     const canvasRef = useRef()
+
     const [isMounted, setMounted] = useState(true)
 
 

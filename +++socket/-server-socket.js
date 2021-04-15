@@ -3,7 +3,7 @@ const app = express();
 //const server = require('http').Server(app);
 //const io = require('socket.io')(server);
 
-let fs = require( 'fs' );
+let fs = require('fs');
 //var app = require('express')();
 let https = require('https');
 let serverSocket = https.createServer({
@@ -12,7 +12,7 @@ let serverSocket = https.createServer({
     ca: fs.readFileSync('./ca.txt'),
     requestCert: false,
     rejectUnauthorized: false
-},app);
+}, app);
 
 const io = require('socket.io')(serverSocket);
 
@@ -31,15 +31,26 @@ app.use(express.json());
 io.on('connection', (socket) => {
     socket.on('GPS', ({ user, x, y }, callback) => {
         //callback(X);
-        socket.broadcast.emit('BROADCAST:GPS', { 'user': user, 'x': x, 'y':y });
+        socket.broadcast.emit('BROADCAST:GPS', { 'user': user, 'x': x, 'y': y });
         console.log(user, x, y)
     });
 
-    socket.on('disconnect', () => {
-        console.log(' user Disconnect')
-    });
-});
+    socket.on('join-room', (roomId, userId) => {
+        console.log('Подключение')
+        socket.join(roomId)
+        socket.to(roomId).broadcast.emit('user-connected', userId)
+        
 
+        socket.on('disconnect', () => {
+            socket.to(roomId).broadcast.emit('user-disconnected', userId)
+            console.log(' user Disconnect')
+        })
+
+    })
+
+
+
+});
 
 app.get('/', (req, res) => {
     res.redirect(`/1`)

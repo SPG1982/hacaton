@@ -13,11 +13,12 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import socket from "../../../../components/Socket/Socket";
+// import socket from "../../../../components/Socket/Socket";
 import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
+import io from "socket.io-client";
 
 
 const Map = (props) => {
@@ -25,11 +26,11 @@ const Map = (props) => {
     const [markers, setMarkers] = useState([]);
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
+    const socket = useRef();
 
+    socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
 
-
-    socket.off()
-    socket.on('BROADCAST:GPS', (data) => {
+    socket.current.on('BROADCAST:GPS', (data) => {
         function isUser(string) {
             if (string['user'] == data.user) {
                 return true;
@@ -64,7 +65,7 @@ const Map = (props) => {
 
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
-        socket.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
+        socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
         //console.log('GPS')
     }
 
@@ -84,7 +85,7 @@ const Map = (props) => {
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
         setInterval(() => {
-            socket.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
+            socket.current.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
         }, 5000);
     }
 
