@@ -15,6 +15,7 @@ import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
 import {addAnswer, addQuestion, setAudio, setUser} from "../../redux/reducers/app-reducer";
+import socket from "../../components/Socket/Socket";
 
 
 const Police = (props) => {
@@ -31,7 +32,7 @@ const Police = (props) => {
 
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
-        // socket.emit('GPS', {'fio': props.fio, 'x': position.coords.latitude, 'y': position.coords.longitude})
+        socket.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
         //console.log('GPS')
     }
 
@@ -46,14 +47,19 @@ const Police = (props) => {
         //maximumAge: 0
     };
 
+    let setUser = (e) => {
+        console.log(e.target.value)
+        props.setUser(e.target.value)
+    }
+
 // --------------------------Наблюдение
     let gps = () => {
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
-        // setInterval(() => {
-        //     socket.emit('GPS', {'fio': props.fio, 'x': 1 ,  'y': 2})
-        // }, 5000);
-        //props.getQuests(props.activePage)
+        setInterval(() => {
+            socket.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
+        }, 5000);
+
 
     }
 
@@ -119,8 +125,8 @@ const Police = (props) => {
             <div style={{display: "flex", justifyContent: 'space-between', margin: '5px'}}>
                 <div style={{margin: 'auto'}}>
                     <h2 style={{textAlign: 'center', display: 'inline'}}>Местоположение нарядов</h2>
-                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}} onChange={() => {
-                    }} value="Наряд №1"/>
+                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}} onChange={(e) => {setUser(e)
+                    }} value={props.user}/>
                 </div>
             </div>
 
@@ -144,10 +150,10 @@ const Police = (props) => {
 
                 {/*{markers.map(marker => {*/}
                 {/*    return (*/}
-                {/*        <Marker key={marker.fio} position={[marker.x, marker.y]}>*/}
+                {/*        <Marker key={marker.user} position={[marker.x, marker.y]}>*/}
                 {/*            /!*{console.log('x и y: ', marker.x, marker.y)}*!/*/}
                 {/*            <Tooltip permanent direction='top'>*/}
-                {/*                /!*{marker.fio}*!/*/}
+                {/*                /!*{marker.user}*!/*/}
                 {/*            </Tooltip>*/}
                 {/*        </Marker>*/}
                 {/*    )*/}
@@ -159,7 +165,7 @@ const Police = (props) => {
                     {/*    Нажатие*/}
                     {/*</Popup>*/}
                     <Tooltip permanent direction='top'>
-                        Вы здесь
+                        {props.user}
                     </Tooltip>
                 </Marker>
             </MapContainer>
@@ -191,6 +197,7 @@ let mapStateToProps = (state) => {
         answers: state.app.answers,
         questions: state.app.questions,
         audio: state.app.audio,
+        user: state.app.user,
     }
 }
 

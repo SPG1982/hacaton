@@ -3,10 +3,10 @@ const app = express();
 //const server = require('http').Server(app);
 //const io = require('socket.io')(server);
 
-var fs = require( 'fs' );
+let fs = require( 'fs' );
 //var app = require('express')();
-var https        = require('https');
-var server = https.createServer({
+let https = require('https');
+let server = https.createServer({
     key: fs.readFileSync('./user.txt'),
     cert: fs.readFileSync('./server.txt'),
     ca: fs.readFileSync('./ca.txt'),
@@ -15,7 +15,6 @@ var server = https.createServer({
 },app);
 
 const io = require('socket.io')(server);
-
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -29,40 +28,25 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 
-// --------------------
-// var nsp = io.of('/my');
-// nsp.on('connection', function(socket) {
-//   console.log('someone connected');
-//   nsp.emit('hi', 'Hello everyone!');
-// });
-//socket.broadcast.emit('broadcast', 'Another client has just connected!');
-// ------------------------------
-
-
 const rooms = new Map();
-
 
 io.on('connection', (socket) => {
 
-    socket.on('QUEST', ({ email, questTitle, slide }, callback) => {
-        //callback(X); 
-            socket.broadcast.emit('BROADCAST:QUEST', { 'email': email, 'title': questTitle, 'slide':slide });
-            console.log(email, questTitle, slide)
+    socket.on('GPS', ({ user, x, y }, callback) => {
+        //callback(X);
+        socket.broadcast.emit('BROADCAST:GPS', { 'user': user, 'x': x, 'y':y });
+        console.log(user, x, y)
     });
 
     socket.on('disconnect', () => {
         console.log(' user Disconnect')
     });
 
-    // socket.on('test', (data, cb) => {cb('С сервера')});
-    // socket.emit('message', 'You are connected!');
-    // socket.broadcast.emit('message', 'Another client has just connected!');
-    //console.log('user connected', socket.id);
 });
 
-server.listen(8889, (err) => {
+server.listen(8887, (err) => {
     if (err) {
         throw Error(err);
     }
-    console.log('Сервер qpuzzle.ru запущен!');
+    console.log('Сервер hacaton запущен!');
 });

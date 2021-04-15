@@ -13,6 +13,7 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import socket from "../../../../components/Socket/Socket";
 import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
@@ -25,8 +26,37 @@ const Map = (props) => {
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
 
-    let mapJS
 
+
+    socket.off()
+    socket.on('BROADCAST:GPS', (data) => {
+        function isUser(string) {
+            if (string['user'] == data.user) {
+                return true;
+            }
+        }
+
+        if (!markers.some(isUser)) {
+            console.log('В массив добавлен: ' + data.user)
+            markers.push({user: data.user, x: data.x, y: data.y});
+            console.log(markers);
+        } else {
+            let markers_new = markers.map(m => {
+                if (m['user'] === data.user) {
+                    return {...m, x: data.x, y: data.y}
+                } else return m
+            })
+
+
+            setMarkers(markers_new)
+            console.log('Изменение положения', markers);
+        }
+    })
+
+
+
+
+    let mapJS
     const mapRef = useRef()
 
     // -------------------------- Первоначальная установка GPS
@@ -34,7 +64,7 @@ const Map = (props) => {
 
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
-        // socket.emit('GPS', {'fio': props.fio, 'x': position.coords.latitude, 'y': position.coords.longitude})
+        socket.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
         //console.log('GPS')
     }
 
@@ -53,11 +83,9 @@ const Map = (props) => {
     let gps = () => {
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
-        // setInterval(() => {
-        //     socket.emit('GPS', {'fio': props.fio, 'x': 1 ,  'y': 2})
-        // }, 5000);
-        //props.getQuests(props.activePage)
-
+        setInterval(() => {
+            socket.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
+        }, 5000);
     }
 
     useEffect(gps, [])
@@ -151,10 +179,10 @@ const Map = (props) => {
 
                 {/*{markers.map(marker => {*/}
                 {/*    return (*/}
-                {/*        <Marker key={marker.fio} position={[marker.x, marker.y]}>*/}
+                {/*        <Marker key={marker.user} position={[marker.x, marker.y]}>*/}
                 {/*            /!*{console.log('x и y: ', marker.x, marker.y)}*!/*/}
                 {/*            <Tooltip permanent direction='top'>*/}
-                {/*                /!*{marker.fio}*!/*/}
+                {/*                /!*{marker.user}*!/*/}
                 {/*            </Tooltip>*/}
                 {/*        </Marker>*/}
                 {/*    )*/}

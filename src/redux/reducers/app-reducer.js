@@ -10,7 +10,7 @@ let initialState = {
     audio: 'speech',
     questions: [],
     answers: [],
-    user: ''
+    user: 'Наряд №1'
 }
 
 export const AppReducer = (state = initialState, action) => {

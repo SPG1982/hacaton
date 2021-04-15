@@ -7,9 +7,10 @@ import {Layout} from "antd";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
 import * as brain from 'brain.js/src';
 import bayes from 'bayes'
+import natural from 'natural'
 
 const Brain = (props) => {
-
+// ++++++++++++++++++++++++++++++++++Brain
     // provide optional config object (or undefined). Defaults shown.
     const config = {
         binaryThresh: 0.5,
@@ -41,7 +42,7 @@ const Brain = (props) => {
     // net.fromJSON(save);
     // console.log(net.run('кража'))
 
-// -------------------------------------
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++Bayes
     let classifier = bayes()
 
     async function f() {
@@ -49,15 +50,22 @@ const Brain = (props) => {
         await classifier.learn('ударил, нанес, бил, грабеж, выхватил, вырвал, угрожал', 'грабеж')
         await classifier.learn('напал, оружие, нож, пистолет, камень', 'разбой')
 
-        let r = await classifier.categorize('похитил')
-        console.log(r)
+        let r = await classifier.categorize('угрожал')
+        //console.log(r)
     }
 
     f();
+// +++++++++++++++++++++++++++++++++++++++++++++++++++Natural
+    const PorterStemmerRu = require('../../../node_modules/natural/lib/natural/stemmers/porter_stemmer_ru');
+    let classifierN = new natural.BayesClassifier(PorterStemmerRu);
+    classifierN.addDocument('кража, украли, похищено, вор, своровали', 'кража');
+    classifierN.addDocument('ударил, нанес, бил, грабеж, выхватил, вырвал, угрожал', 'грабеж');
+    classifierN.addDocument('напал, оружие, нож, пистолет, камень', 'разбой');
+    //classifierN.addDocument('sell gold', 'sell');
 
-
-
-
+    classifierN.train();
+    console.log(classifierN.classify('забрал'));
+    console.log(classifierN.getClassifications('забрал'));
 
     return (
         <>

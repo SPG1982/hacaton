@@ -33,7 +33,7 @@ const Webcam = (props) => {
 
     const startVideo = () => {
         console.log('Старт')
-        navigator.getUserMedia(
+        navigator.mediaDevices.getUserMedia(
             {video: {}},
             stream => videoRef.current.srcObject = stream,
             err => console.error(err)

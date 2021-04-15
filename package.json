@@ -38,6 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "111": "webpack-dev-server --https --cert ./ssl/server.crt --key ./ssl/server.key — mode development",
     "start_https": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

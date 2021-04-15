@@ -12,7 +12,7 @@ import Photo from "./components/Photo/Photo";
 import Webcam from "./components/Webcam/Webcam";
 import Dialog from "./components/Dialog/Dialog";
 import Form from "./components/Form/Form";
-import {addAnswer, addQuestion, setAudio} from "../../redux/reducers/app-reducer";
+import {addAnswer, addQuestion, setAudio, setUser} from "../../redux/reducers/app-reducer";
 
 const DashBoard = (props) => {
     //console.log(props)
@@ -77,11 +77,12 @@ let mapStateToProps = (state) => {
         answers: state.app.answers,
         questions: state.app.questions,
         audio: state.app.audio,
+        user: state.app.user,
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio}
+    {addAnswer, addQuestion, setAudio, setUser}
 
 export default compose(
     connect(mapStateToProps, mapDispatchToPropsLite),
