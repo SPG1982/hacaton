@@ -3,6 +3,7 @@ const QUESTIONS = 'app/QUESTIONS'
 const ANSWERS = 'app/ANSWERS'
 const AUDIO = 'app/AUDIO'
 const USER = 'app/USER'
+const MODAL = 'app/MODAL'
 
 
 let initialState = {
@@ -10,7 +11,8 @@ let initialState = {
     audio: 'speech',
     questions: [],
     answers: [],
-    user: 'Наряд №1'
+    user: 'Наряд №1',
+    modal: true
 }
 
 export const AppReducer = (state = initialState, action) => {
@@ -44,6 +46,12 @@ export const AppReducer = (state = initialState, action) => {
             }
         }
 
+        case MODAL: {
+            return {
+                ...state, modal: action.view
+            }
+        }
+
         default :
             return state
     }
@@ -67,6 +75,10 @@ export const addQuestion = (question) => {
 
 export const setAudio = (typeAudio) => {
     return {type: AUDIO, typeAudio}
+}
+
+export const setModal = (view) => {
+    return {type: MODAL, view}
 }
 
 

@@ -35,8 +35,11 @@ const Webcam = (props) => {
         console.log('Старт')
         navigator.mediaDevices.getUserMedia(
             {video: {}},
-            stream => videoRef.current.srcObject = stream,
-            err => console.error(err)
+        ).then(
+            (stream) => {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            }
         )
     }
 
@@ -112,15 +115,19 @@ const Webcam = (props) => {
                  style={{textAlign: 'center', position: 'relative'}}>
                 {!find && <div style={{
                     padding: '3px',
+                    marginTop: '5px',
                     position: 'absolute',
-                    backgroundColor: 'red',
-                    color: 'white',
+                    borderRadius: '10px',
+                    backgroundColor: 'Orange',
+                    color: 'black',
                     fontSize: '20px'
-                }}>Личность не установлена</div>}
+                }}>Идентификация...</div>}
                 {find && <div style={{
                     padding: '3px',
+                    marginTop: '5px',
+                    borderRadius: '10px',
                     position: 'absolute',
-                    backgroundColor: 'yellow',
+                    backgroundColor: 'greenYellow',
                     color: 'black',
                     fontSize: '20px'
                 }}>Личность установлена: {find}</div>}

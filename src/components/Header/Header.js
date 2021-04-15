@@ -28,9 +28,9 @@ const HeaderSite = React.memo(props => {
                           style={{textAlign: 'right', height: '50px'}}>
                         <Menu.Item style={{verticalAlign: 'middle'}} className="menu-right-login" key="login-menu">
                                     <Button className={styles.button} onClick={() => {}}
-                                            type="primary">Страница 1</Button>
+                                            type="primary">Уведомления</Button>
                                     <Button className={styles.button} onClick={() =>{}}
-                                            type="danger">Страница 2</Button>
+                                            type="danger">Авторизация</Button>
                         </Menu.Item>
                     </Menu>
                 </Col>

@@ -6,7 +6,7 @@ const app = express();
 let fs = require( 'fs' );
 //var app = require('express')();
 let https = require('https');
-let server = https.createServer({
+let serverSocket = https.createServer({
     key: fs.readFileSync('./user.txt'),
     cert: fs.readFileSync('./server.txt'),
     ca: fs.readFileSync('./ca.txt'),
@@ -14,7 +14,7 @@ let server = https.createServer({
     rejectUnauthorized: false
 },app);
 
-const io = require('socket.io')(server);
+const io = require('socket.io')(serverSocket);
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -28,10 +28,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 
-const rooms = new Map();
-
 io.on('connection', (socket) => {
-
     socket.on('GPS', ({ user, x, y }, callback) => {
         //callback(X);
         socket.broadcast.emit('BROADCAST:GPS', { 'user': user, 'x': x, 'y':y });
@@ -41,10 +38,22 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(' user Disconnect')
     });
-
 });
 
-server.listen(8887, (err) => {
+
+app.get('/', (req, res) => {
+    res.redirect(`/1`)
+})
+
+app.get('/:room', (req, res) => {
+    // res.send("<h2>Привет Express!</h2>");
+    // res.render('room', { })
+})
+
+
+
+
+serverSocket.listen(8887, (err) => {
     if (err) {
         throw Error(err);
     }

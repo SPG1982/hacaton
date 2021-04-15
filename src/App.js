@@ -9,6 +9,7 @@ import DashBoard from './Pages/DashBoard/DashBoard'
 import Police from "./Pages/Police/Police";
 import Tf from "./Pages/Tf/Tf";
 import Brain from "./Pages/Brain/Brain";
+import Zoom from "./Pages/Zoom/Zoom";
 
 function App(props) {
   return (
@@ -19,6 +20,7 @@ function App(props) {
             <Route path="/police" component={Police}/>
             <Route path="/tf" component={Tf}/>
             <Route path="/brain" component={Brain}/>
+            <Route path="/zoom" component={Zoom}/>
             <Route path="/" component={Main}/>
             <Route render={() => <div>404 NOT FOUND</div>}/>
         </Switch>

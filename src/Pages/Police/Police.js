@@ -14,18 +14,19 @@ import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
-import {addAnswer, addQuestion, setAudio, setUser} from "../../redux/reducers/app-reducer";
+import {addAnswer, addQuestion, setAudio, setModal, setUser} from "../../redux/reducers/app-reducer";
 import socket from "../../components/Socket/Socket";
+import {ModalView} from "../../components/Modals/ModalView";
 
 
 const Police = (props) => {
     const [markers, setMarkers] = useState([]);
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
+    const [modal, setModal] = useState(false);
 
     let mapJS
-
-    const mapRef = useRef()
+    let mapRef = useRef()
 
     // -------------------------- Первоначальная установка GPS
     const [crd, setCrd] = useState(false);
@@ -57,7 +58,7 @@ const Police = (props) => {
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
         setInterval(() => {
-            socket.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
+            socket.emit('GPS', {'user': props.user, 'x': 1, 'y': 2})
         }, 5000);
 
 
@@ -125,11 +126,13 @@ const Police = (props) => {
             <div style={{display: "flex", justifyContent: 'space-between', margin: '5px'}}>
                 <div style={{margin: 'auto'}}>
                     <h2 style={{textAlign: 'center', display: 'inline'}}>Местоположение нарядов</h2>
-                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}} onChange={(e) => {setUser(e)
-                    }} value={props.user}/>
+                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}}
+                           onChange={(e) => {
+                               setUser(e)
+                           }} value={props.user}/>
                 </div>
             </div>
-
+            <ModalView {...props} />
 
             <MapContainer
                 id="mapJS"
@@ -198,11 +201,12 @@ let mapStateToProps = (state) => {
         questions: state.app.questions,
         audio: state.app.audio,
         user: state.app.user,
+        modal: state.app.modal
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio, setUser}
+    {addAnswer, addQuestion, setAudio, setUser, setModal}
 
 
 export default compose(
