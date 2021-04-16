@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="76810821-3799-4d96-94c8-9e8b6d9121eb" name="hacaton" url="http://31.31.196.186">
+        <fileTransfer rootFolder="/www/hacaton.qpuzzle.ru" host="31.31.196.186" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

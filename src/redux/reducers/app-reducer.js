@@ -11,7 +11,7 @@ let initialState = {
     audio: 'speech',
     questions: [],
     answers: [],
-    user: 'Наряд №1',
+    user: 'Наряд №' + Math.round(Math.random()*100),
     modal: true
 }
 

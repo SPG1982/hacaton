@@ -39,14 +39,22 @@ io.on('connection', socket => {
         console.log(user, x, y)
     });
 
-    if (!users[socket.id]) {
-        users[socket.id] = socket.id;
-    }
-    console.log(socket.id)
-    socket.emit("yourID", socket.id);
+    socket.on('id', ({ id }) => {
+        if (!users[id]) {
+            users[id] = id;
+            console.log(id)
+        }
+
+    });
+
+    // socket.emit("yourID", socket.id);
+
     io.sockets.emit("allUsers", users);
+
     socket.on('disconnect', () => {
         delete users[socket.id];
+        console.log(' user Disconnect')
+        io.sockets.emit("allUsers", users);
     })
 
     socket.on("callUser", (data) => {
@@ -56,6 +64,7 @@ io.on('connection', socket => {
     socket.on("acceptCall", (data) => {
         io.to(data.to).emit('callAccepted', data.signal);
     })
+
 });
 
 server.listen(9000, () => console.log('server is running on port 9000'));

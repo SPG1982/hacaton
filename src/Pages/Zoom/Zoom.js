@@ -1,13 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import {Button, Layout} from "antd";
+import Header from "../../components/Header/Header";
+import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
+import {compose} from "redux";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 
 const Container = styled.div`
-  height: 100vh;
-  width: 100%;
+  //height: 100vh;
+  //width: 100%;
   display: flex;
   flex-direction: column;
+  margin: 10px;
 `;
 
 const Row = styled.div`
@@ -19,9 +26,10 @@ const Video = styled.video`
   border: 1px solid blue;
   width: 50%;
   height: 50%;
+  margin: 5px;
 `;
 
-function Zoom() {
+function Zoom(props) {
     const [yourID, setYourID] = useState("");
     const [users, setUsers] = useState({});
     const [stream, setStream] = useState();
@@ -36,17 +44,25 @@ function Zoom() {
 
     useEffect(() => {
         socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(stream => {
             setStream(stream);
             if (userVideo.current) {
                 userVideo.current.srcObject = stream;
             }
         })
 
-        socket.current.on("yourID", (id) => {
+        socket.current.on("yourID", (id, cb) => {
             setYourID(id);
+            cb(props.user)
         })
+
+        // socket.current.on("connect", () => {
+        //     socket.current.emit("id", {id: props.user})
+        // });
+
+
         socket.current.on("allUsers", (users) => {
+            //console.log('allUsers' + users)
             setUsers(users);
         })
 
@@ -55,6 +71,7 @@ function Zoom() {
             setCaller(data.from);
             setCallerSignal(data.signal);
         })
+
     }, []);
 
     function callPeer(id) {
@@ -79,7 +96,7 @@ function Zoom() {
         });
 
         peer.on("signal", data => {
-            socket.current.emit("callUser", { userToCall: id, signalData: data, from: yourID })
+            socket.current.emit("callUser", {userToCall: id, signalData: data, from: yourID})
         })
 
         peer.on("stream", stream => {
@@ -103,7 +120,7 @@ function Zoom() {
             stream: stream,
         });
         peer.on("signal", data => {
-            socket.current.emit("acceptCall", { signal: data, to: caller })
+            socket.current.emit("acceptCall", {signal: data, to: caller})
         })
 
         peer.on("stream", stream => {
@@ -116,14 +133,14 @@ function Zoom() {
     let UserVideo;
     if (stream) {
         UserVideo = (
-            <Video playsInline muted ref={userVideo} autoPlay />
+            <Video playsInline muted ref={userVideo} autoPlay/>
         );
     }
 
     let PartnerVideo;
     if (callAccepted) {
         PartnerVideo = (
-            <Video playsInline ref={partnerVideo} autoPlay />
+            <Video playsInline ref={partnerVideo} autoPlay/>
         );
     }
 
@@ -131,24 +148,27 @@ function Zoom() {
     if (receivingCall) {
         incomingCall = (
             <div>
-                <h1>{caller} is calling you</h1>
-                <button onClick={acceptCall}>Accept</button>
+                <h1>Входящий звонок: {caller} </h1>
+                <Button onClick={acceptCall} type="primary">Принять</Button>
             </div>
         )
     }
     return (
         <Container>
+            <h3 style={{textAlign: 'center'}}>{props.user}</h3>
             <Row>
                 {UserVideo}
                 {PartnerVideo}
             </Row>
             <Row>
-                {Object.keys(users).map((key,i) => {
-                    if (key === yourID) {
+                {Object.entries(users).map((user, i) => {
+                    console.log(user)
+                    if (user[0] === yourID) {
                         return null;
                     }
                     return (
-                        <button key={i} onClick={() => callPeer(key)}>Call {key}</button>
+                        <Button style={{margin: '5px'}} key={i} type="primary"
+                                onClick={() => callPeer(user[0])}>Позвонить {user[1]}</Button>
                     );
                 })}
             </Row>
@@ -159,4 +179,34 @@ function Zoom() {
     );
 }
 
-export default Zoom;
+const MainContainer = (props) => {
+    const {Content} = Layout;
+    return (
+        <>
+            <Header/>
+            <Layout style={{height: `calc(100vh - 50px)`}}>
+                <LeftSidebar {...props}/>
+                <Layout>
+                    <Content style={{margin: '0 16px'}}>
+                        <Zoom {...props}/>
+                    </Content>
+                </Layout>
+            </Layout>
+        </>
+    );
+}
+
+let mapStateToProps = (state) => {
+    return {
+        app: state.app,
+        user: state.app.user,
+    }
+}
+
+let mapDispatchToPropsLite =
+    {}
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToPropsLite),
+    withRouter
+)(MainContainer)
