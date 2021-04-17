@@ -30,6 +30,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 const users = {};
+const sockets = {};
+let map = new Map();
 
 io.on('connection', socket => {
 
@@ -39,26 +41,64 @@ io.on('connection', socket => {
         console.log(user, x, y)
     });
 
-    socket.on('id', ({ id }) => {
-        if (!users[id]) {
-            users[id] = id;
-            console.log(id)
+    // if (!sockets[socket.id]) {
+    //     sockets[socket.id] = socket.id;
+    // }
+
+    socket.emit("yourID", socket.id, (user) => {
+        console.log('Ответ сокета User: ' + user)
+        if (!map.has(user)) {
+            map.set(user, socket.id)
         }
+
+        if (!users[socket.id]) {
+            console.log('Новый user ' + user)
+            users[socket.id] = user;
+        }
+
+        // console.log(users)
+        io.sockets.emit("allUsers", users);
+        // console.log(Object.entries(users))
+
+        let duplicate = {}
+        // Object.entries(users).forEach(function (value, i) {
+        //     value.forEach((v, k) => {
+        //         if (!duplicate[v]) {
+        //             duplicate[v] = 1;
+        //         } else {
+        //             duplicate[v] += 1
+        //             delete users[k]
+        //             console.log(users)
+        //         }
+        //     })
+        // });
+
+        for (key in users) {
+            if (!duplicate[users[key]]) {
+                duplicate[users[key]] = 1;
+            } else {
+                duplicate[users[key]] += 1
+                delete users[key]
+                console.log(users)
+            }
+        }
+        console.log(users)
 
     });
 
-    // socket.emit("yourID", socket.id);
-
-    io.sockets.emit("allUsers", users);
+    // console.log(sockets)
+    // io.sockets.emit("allUsers", sockets);
 
     socket.on('disconnect', () => {
-        delete users[socket.id];
-        console.log(' user Disconnect')
+        console.log('Disconnect ' + socket.id)
+        // delete sockets[socket.id]
+        delete users[socket.id]
         io.sockets.emit("allUsers", users);
     })
 
+
     socket.on("callUser", (data) => {
-        io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+        io.to(data.userToCall).emit('hey', { signal: data.signalData, from: data.from });
     })
 
     socket.on("acceptCall", (data) => {

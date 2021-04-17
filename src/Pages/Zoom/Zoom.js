@@ -51,6 +51,10 @@ function Zoom(props) {
             }
         })
 
+        // socket.current.on("yourID", (id) => {
+        //     setYourID(id);
+        // })
+
         socket.current.on("yourID", (id, cb) => {
             setYourID(id);
             cb(props.user)
@@ -62,7 +66,6 @@ function Zoom(props) {
 
 
         socket.current.on("allUsers", (users) => {
-            //console.log('allUsers' + users)
             setUsers(users);
         })
 
@@ -109,7 +112,6 @@ function Zoom(props) {
             setCallAccepted(true);
             peer.signal(signal);
         })
-
     }
 
     function acceptCall() {
@@ -148,7 +150,7 @@ function Zoom(props) {
     if (receivingCall) {
         incomingCall = (
             <div>
-                <h1>Входящий звонок: {caller} </h1>
+                <h1 style={{backgroundColor: 'yellow', padding: '3px'}}>Входящий звонок: {users[caller]} </h1>
                 <Button onClick={acceptCall} type="primary">Принять</Button>
             </div>
         )

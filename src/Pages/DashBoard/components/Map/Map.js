@@ -28,8 +28,6 @@ const Map = (props) => {
     const [search, setSearch] = useState(null);
     const socket = useRef();
 
-    socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
-
     socket.current.on('BROADCAST:GPS', (data) => {
         function isUser(string) {
             if (string['user'] == data.user) {
@@ -82,6 +80,7 @@ const Map = (props) => {
 
 // --------------------------Наблюдение
     let gps = () => {
+        socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
         setInterval(() => {

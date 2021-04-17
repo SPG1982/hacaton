@@ -12,7 +12,7 @@ let initialState = {
     questions: [],
     answers: [],
     user: 'Наряд №' + Math.round(Math.random()*100),
-    modal: true
+    modal: false
 }
 
 export const AppReducer = (state = initialState, action) => {

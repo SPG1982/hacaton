@@ -26,28 +26,28 @@ const Police = (props) => {
     const [search, setSearch] = useState(null);
     const [modal, setModal] = useState(false);
     const socket = useRef();
+    const [crd, setCrd] = useState(false);
 
     let mapJS
     let mapRef = useRef()
-    socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
+
     // -------------------------- Первоначальная установка GPS
-    const [crd, setCrd] = useState(false);
 
     function success(position) {
-        setCrd([position.coords.latitude, position.coords.longitude])
+        setCrd([position.coords.latitude + 0.01, position.coords.longitude])
         socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
-        //console.log('GPS')
+        console.log('GPS')
     }
 
     function error(err) {
         console.warn(`ERROR(${err.code}): ${err.message}`);
-        alert('Местонахождение не определено');
+        //alert('Местонахождение не определено');
     };
 
     let options = {
         enableHighAccuracy: true,
         //timeout: 1000,
-        //maximumAge: 0
+        //maximumAge: 10000
     };
 
     let setUser = (e) => {
@@ -57,12 +57,36 @@ const Police = (props) => {
 
 // --------------------------Наблюдение
     let gps = () => {
+        socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
-        setInterval(() => {
-            socket.current.emit('GPS', {'user': props.user, 'x': 1, 'y': 2})
-        }, 5000);
+        // setInterval(() => {
+        //
+        // }, 1000);
 
+        socket.current.on('BROADCAST:GPS', (data) => {
+            console.log('Сообщение Сокета: ' + data.user)
+
+            function isUser(string) {
+                if (string['user'] == data.user) {
+                    return true;
+                }
+            }
+
+            if (!markers.some(isUser)) {
+                console.log('В массив добавлен: ' + data.user)
+                markers.push({user: data.user, x: data.x, y: data.y});
+                //console.log(markers);
+            } else {
+                let markers_new = markers.map(m => {
+                    if (m['user'] === data.user) {
+                        return {...m, x: data.x, y: data.y}
+                    } else return m
+                })
+                setMarkers(markers_new)
+                console.log('Изменение положения', markers);
+            }
+        })
 
     }
 
@@ -153,17 +177,17 @@ const Police = (props) => {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {/*{markers.map(marker => {*/}
-                {/*    return (*/}
-                {/*        <Marker key={marker.user} position={[marker.x, marker.y]}>*/}
-                {/*            /!*{console.log('x и y: ', marker.x, marker.y)}*!/*/}
-                {/*            <Tooltip permanent direction='top'>*/}
-                {/*                /!*{marker.user}*!/*/}
-                {/*            </Tooltip>*/}
-                {/*        </Marker>*/}
-                {/*    )*/}
-                {/*})*/}
-                {/*}*/}
+                {markers.map(marker => {
+                    return (
+                        <Marker key={marker.user} position={[marker.x, marker.y]}>
+                            {/*{console.log('x и y: ', marker.x, marker.y)}*/}
+                            <Tooltip permanent direction='top'>
+                                {marker.user}
+                            </Tooltip>
+                        </Marker>
+                    )
+                })
+                }
 
                 <Marker position={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}>
                     {/*<Popup>*/}
