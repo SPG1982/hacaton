@@ -16,7 +16,7 @@ const Photo = (props) => {
     let newAnswer = ''
     const [voiceIndex, setVoiceIndex] = useState(null);
     const [questions, setQuestions] = useState([]);
-    const [question, setQuestion] = useState(1);
+    const [question, setQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [lastAnswer, setLastAnswer] = useState('');
     const [answer, setAnswer] = useState('');
@@ -45,7 +45,7 @@ const Photo = (props) => {
                 setTimeout(stop, 100)
                 console.log('Остановка распознавания')
                 props.addAnswer(answer)
-                props.audio === 'sound' ? playSound('2.mp3') : sayText(questions[2])
+                props.audio === 'sound' ? playSound(question + '.mp3') : sayText(questions[question])
                 setAnswer('')
             } else {
                 //console.log('Ответ ' + answer, 'Старый ответ: ' + lastAnswer)
@@ -84,8 +84,9 @@ const Photo = (props) => {
     useEffect(() => {
         setQuestions([
             'Назовите фамилию, имя, отчество',
-            'Что произошло?',
-            'Когда это произошло?'
+            'Укажите дату события?',
+            'Уточните время',
+            'Что произошло?'
         ])
     }, [])
 
@@ -93,6 +94,7 @@ const Photo = (props) => {
         stop()
         props.addQuestion(text)
         speak({text, voice})
+        setQuestion(question + 1)
     }
 
     //useEffect(sayText, [answer])
@@ -118,7 +120,7 @@ const Photo = (props) => {
                 <div style={{width: "75%", margin: "auto", fontSize: '18px', textAlign: 'center'}}>
                     <button style={{margin: '10px auto', backgroundColor: 'blue', color: 'white', whiteSpace: 'normal', fontSize: '1em'}} type="primary" disabled={blocked}
                             size="large" onClick={() => {
-                        (props.audio === 'sound') ? playSound('1.mp3') : sayText(questions[1])
+                        (props.audio === 'sound') ? playSound(question + '.mp3') : sayText(questions[question])
                     }}>
                         {listening ? 'Идет распознавание речи' : 'Обратиться к дежурному'}
                     </button>
@@ -137,7 +139,7 @@ const Photo = (props) => {
                         : null
                     }
                     {listening && <div style={{marginTop: '120px'}}>
-                        <div style={{backgroundColor: 'red', color: 'white'}}>Вопрос: {questions[1]}</div>
+                        <div style={{backgroundColor: 'red', color: 'white'}}>Вопрос: {questions[question - 1]}</div>
                         <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>
                     </div>}
                 </div>

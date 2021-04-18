@@ -8,7 +8,7 @@ const Chart = (props) => {
   // console.log(label, confidence);
   return (
     <div>
-      <h3>Classification Confidence: {label}</h3>  
+      <h3>Предмет классфицирован: {label}</h3>
       <GaugeChart
         style={{color: 'black'}}
         textColor="black"

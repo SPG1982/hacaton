@@ -68,9 +68,9 @@ const Map = (props) => {
             }
 
             if (!markers.some(isUser)) {
-                console.log('В массив добавлен: ' + data.user)
+                //console.log('В массив добавлен: ' + data.user)
                 markers.push({user: data.user, x: data.x, y: data.y});
-                console.log(markers);
+                //console.log(markers);
             } else {
                 let markers_new = markers.map(m => {
                     if (m['user'] === data.user) {
@@ -80,7 +80,7 @@ const Map = (props) => {
 
 
                 setMarkers(markers_new)
-                console.log('Изменение положения', markers);
+                //console.log('Изменение положения', markers);
             }
         })
 
@@ -154,7 +154,6 @@ const Map = (props) => {
 // ----------------------
     return (
         <>
-            {console.log('render')}
             <h2 style={{textAlign: 'center'}}>Местоположение нарядов</h2>
             <MapContainer
                 id="mapJS"

@@ -5,6 +5,8 @@ const AUDIO = 'app/AUDIO'
 const USER = 'app/USER'
 const MODALINFO = 'app/MODALINFO'
 const MODALCALL = 'app/MODALCALL'
+const WARNING = 'app/WARNING'
+const CRIME = 'app/CRIME'
 
 
 let initialState = {
@@ -14,7 +16,20 @@ let initialState = {
     answers: [],
     user: 'Наряд №' + Math.round(Math.random()*100),
     modalInfo: false,
-    modalCall: true
+    modalCall: true,
+    warning: '',
+    crime: {
+        fio: '',
+        date: '',
+        time: '',
+        sposob: '',
+        predmet: '',
+        life: '',
+        summ: '',
+        sostav: '',
+        text: '',
+
+    }
 }
 
 export const AppReducer = (state = initialState, action) => {
@@ -60,6 +75,18 @@ export const AppReducer = (state = initialState, action) => {
             }
         }
 
+        case WARNING: {
+            return {
+                ...state, warning: action.text
+            }
+        }
+
+        case CRIME: {
+            return {
+                ...state, crime: action.text
+            }
+        }
+
         default :
             return state
     }
@@ -91,6 +118,14 @@ export const setModalInfo = (view) => {
 
 export const setModalCall = (view) => {
     return {type: MODALCALL, view}
+}
+
+export const setWarning = (text) => {
+    return {type: WARNING, text}
+}
+
+export const setCrime = (data) => {
+    return {type: CRIME, data}
 }
 
 

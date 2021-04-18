@@ -18,7 +18,7 @@ let classifier;
 
 function Tf() {
     const videoRef = useRef();
-    const [start, setStart] = useState(false);
+    const [start, setStart] = useState(true);
     const [result, setResult] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
@@ -37,6 +37,7 @@ function Tf() {
     }, []);
 
     useInterval(() => {
+        //console.log('Интервал TF')
         if (classifier && start) {
             classifier.classify(videoRef.current, (error, results) => {
                 if (error) {

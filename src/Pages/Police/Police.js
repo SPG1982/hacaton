@@ -14,7 +14,15 @@ import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
-import {addAnswer, addQuestion, setAudio, setModalCall, setModalInfo, setUser} from "../../redux/reducers/app-reducer";
+import {
+    addAnswer,
+    addQuestion,
+    setAudio,
+    setModalCall,
+    setModalInfo,
+    setUser,
+    setWarning
+} from "../../redux/reducers/app-reducer";
 // import socket from "../../components/Socket/Socket";
 import {ModalInfo} from "../../components/Modals/ModalInfo";
 import io from "socket.io-client";
@@ -234,12 +242,13 @@ let mapStateToProps = (state) => {
         audio: state.app.audio,
         user: state.app.user,
         modalInfo: state.app.modalInfo,
-        modalCall: state.app.modalCall
+        modalCall: state.app.modalCall,
+        warning: state.app.warning
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio, setUser, setModalInfo, setModalCall}
+    {addAnswer, addQuestion, setAudio, setUser, setModalInfo, setModalCall, setWarning}
 
 
 export default compose(

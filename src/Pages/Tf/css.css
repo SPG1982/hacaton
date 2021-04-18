@@ -27,7 +27,7 @@ body {
 .capture button {
     width: 150px;
     height: 41px;
-    background-color: #e407afc2;
+    background-color: black;
     border: 1px solid pink;
     border-radius: 4px;
     color: #FFF;
@@ -37,7 +37,7 @@ body {
 }
 
 .capture button:hover {
-    background-color: #ca0fcaa6;
+    background-color: blue;
 }
 
 .results {

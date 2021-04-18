@@ -1,16 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {compose} from "redux";
 import {connect, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 
 const Dialog = (props) => {
 
+    let refDialog = useRef()
+
+useEffect(()=> {
+    refDialog.current.scrollTo(0, 99999);
+}, [props])
+
 
     return (
         <>
-            <div style={{width: '95%', height: '', margin: 'auto'}}>
+            <div style={{width: '95%', margin: 'auto'}}>
                 <h2 style={{textAlign: 'center'}}>Диалог с дежурным</h2>
-                <div style={{border: '1px solid black', height: '', overflowY: 'auto'}}>
+                <div id='dialog' ref={refDialog} style={{border: '1px solid black', maxHeight: '400px', overflowY: 'auto'}}>
 
 
                     {props.questions.map((q, i) => {
