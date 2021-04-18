@@ -25,8 +25,8 @@ const DashBoard = (props) => {
     return (
         <div style={{marginTop: '10px'}}>
             <div style={{display: "flex", justifyContent: 'space-around', textAlign: 'center'}}>
-                <button onClick={()=> {setAudio('speech')}} style={{backgroundColor: (props.audio === 'speech') ? 'blue' : 'black', color: 'white', fontSize: '20px'}}>Синтезатор голоса</button>
-                <button onClick={()=> {setAudio('sound')}} style={{backgroundColor: (props.audio === 'sound') ? 'blue' : 'black', color: 'white', fontSize: '20px'}}>Записанные голоса</button>
+                <button onClick={()=> {setAudio('speech')}} style={{backgroundColor: (props.audio === 'speech') ? 'blue' : 'black', color: 'white', fontSize: '18px'}}>Синтезатор голоса</button>
+                <button onClick={()=> {setAudio('sound')}} style={{backgroundColor: (props.audio === 'sound') ? 'blue' : 'black', color: 'white', fontSize: '18px'}}>Записанные голоса</button>
             </div>
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8}>
@@ -59,10 +59,10 @@ const Container = (props) => {
     return (
         <>
             <Header/>
-            <Layout style={{height: `calc(100vh - 50px)`}}>
+            <Layout style={{minHeight: `calc(100vh - 50px)`}}>
                 <LeftSidebar {...props}/>
                 <Layout>
-                    <Content style={{margin: '0 16px'}}>
+                    <Content style={{margin: '10px 10px 10px 10px'}}>
                         <DashBoard {...props}/>
                     </Content>
                 </Layout>

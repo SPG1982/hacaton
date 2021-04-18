@@ -10,6 +10,8 @@ const Chart = (props) => {
     <div>
       <h3>Classification Confidence: {label}</h3>  
       <GaugeChart
+        style={{color: 'black'}}
+        textColor="black"
         id="gauge-chart3"
         nrOfLevels={3}
         colors={["#FF5F6D", "#FFC371", "rgb(26 202 26)"]}

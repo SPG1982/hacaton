@@ -10,9 +10,12 @@ const Webcam = (props) => {
     const [find, setFind] = useState(false);
     const videoRef = useRef()
     const canvasRef = useRef()
+    const contRef = useRef()
 
     const [isMounted, setMounted] = useState(true)
 
+    let widthVideo = 400
+    let heightVideo = 300
 
     useEffect(() => {
         const loadModels = async () => {
@@ -50,14 +53,15 @@ const Webcam = (props) => {
         console.log('Обучение модели прошло')
         const faceMatcher = new faceApi.FaceMatcher(labeledFaceDescriptors, 0.5);
         canvasRef.current.innerHTML = faceApi.createCanvasFromMedia(videoRef.current)
-        faceApi.matchDimensions(canvasRef.current, {width: 400, height: 300});
-
+        widthVideo = document.querySelector('#containerVideo').offsetWidth
+        heightVideo = document.querySelector('#containerVideo').offsetHeight - 6
+        faceApi.matchDimensions(canvasRef.current, {width: widthVideo, height: heightVideo});
         setInterval(async () => {
             try {
                 const detections = await faceApi.detectAllFaces(videoRef.current, new faceApi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender().withFaceExpressions().withFaceDescriptors();
-                const resizedDetections = faceApi.resizeResults(detections, {width: 400, height: 300});
+                const resizedDetections = faceApi.resizeResults(detections, {width: widthVideo, height: heightVideo});
 
-                canvasRef.current.getContext('2d').clearRect(0, 0, 400, 300);
+                canvasRef.current.getContext('2d').clearRect(0, 0, widthVideo, heightVideo);
                 faceApi.draw.drawDetections(canvasRef.current, resizedDetections);
                 faceApi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
                 faceApi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
@@ -113,30 +117,38 @@ const Webcam = (props) => {
 
 
             <div className={styles.displayFlex + ' ' + styles.justifyCenter}
-                 style={{textAlign: 'center', position: 'relative'}}>
-                {!find && <div style={{
-                    padding: '3px',
-                    marginTop: '5px',
-                    position: 'absolute',
-                    borderRadius: '10px',
-                    backgroundColor: 'Orange',
-                    color: 'black',
-                    fontSize: '20px'
-                }}>Идентификация...</div>}
-                {find && <div style={{
-                    padding: '3px',
-                    marginTop: '5px',
-                    borderRadius: '10px',
-                    position: 'absolute',
-                    backgroundColor: 'greenYellow',
-                    color: 'black',
-                    fontSize: '20px'
-                }}>Личность установлена: {find}</div>}
-                <video ref={videoRef} autoPlay muted width="400px" height="300px"
-                       style={{border: '1px solid black', margin: 'auto'}}
-                       onPlay={handleVideoOnPlay}
-                />
-                <canvas ref={canvasRef} width="400px" height="300px" className={styles.absolute}/>
+                 style={{textAlign: 'center'}}>
+                <div ref={contRef} id="containerVideo" style={{width: '400px', height: '100%', position: 'relative'}}>
+
+                    {!find && <div style={{
+                        padding: '3px',
+                        // marginTop: '5px',
+                        position: 'absolute',
+                        width: '100%',
+                        // borderRadius: '10px',
+                        backgroundColor: 'Orange',
+                        color: 'black',
+                        fontSize: '20px'
+                    }}>Идентификация...</div>}
+                    {find && <div style={{
+                        padding: '3px',
+                        // marginTop: '5px',
+                        // borderRadius: '10px',
+                        position: 'absolute',
+                        width: '100%',
+                        backgroundColor: 'greenYellow',
+                        color: 'black',
+                        fontSize: '18px'
+                    }}>Личность установлена: {find}</div>}
+
+                    <canvas ref={canvasRef} width="100%" height="100%" className={styles.absolute}/>
+                    <video ref={videoRef} autoPlay muted width="100%" height="100%"
+                           style={{border: '1px solid black', margin: 'auto'}}
+                           onPlay={handleVideoOnPlay}
+                    />
+
+                </div>
+
             </div>
         </>
     )

@@ -28,33 +28,6 @@ const Map = (props) => {
     const [search, setSearch] = useState(null);
     const socket = useRef();
 
-    socket.current.on('BROADCAST:GPS', (data) => {
-        function isUser(string) {
-            if (string['user'] == data.user) {
-                return true;
-            }
-        }
-
-        if (!markers.some(isUser)) {
-            console.log('В массив добавлен: ' + data.user)
-            markers.push({user: data.user, x: data.x, y: data.y});
-            console.log(markers);
-        } else {
-            let markers_new = markers.map(m => {
-                if (m['user'] === data.user) {
-                    return {...m, x: data.x, y: data.y}
-                } else return m
-            })
-
-
-            setMarkers(markers_new)
-            console.log('Изменение положения', markers);
-        }
-    })
-
-
-
-
     let mapJS
     const mapRef = useRef()
 
@@ -63,7 +36,7 @@ const Map = (props) => {
 
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
-        socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
+        socket.current.emit('GPS', {'user': 'Заявитель', 'x': position.coords.latitude, 'y': position.coords.longitude})
         //console.log('GPS')
     }
 
@@ -83,9 +56,34 @@ const Map = (props) => {
         socket.current = io.connect("server-hacaton.qpuzzle.ru:9000");
         navigator.geolocation.getCurrentPosition(success, error, options);
         navigator.geolocation.watchPosition(success, error, options);
-        setInterval(() => {
-            socket.current.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
-        }, 5000);
+        // setInterval(() => {
+        //     socket.current.emit('GPS', {'user': props.user, 'x': 1 ,  'y': 2})
+        // }, 5000);
+
+        socket.current.on('BROADCAST:GPS', (data) => {
+            function isUser(string) {
+                if (string['user'] == data.user) {
+                    return true;
+                }
+            }
+
+            if (!markers.some(isUser)) {
+                console.log('В массив добавлен: ' + data.user)
+                markers.push({user: data.user, x: data.x, y: data.y});
+                console.log(markers);
+            } else {
+                let markers_new = markers.map(m => {
+                    if (m['user'] === data.user) {
+                        return {...m, x: data.x, y: data.y}
+                    } else return m
+                })
+
+
+                setMarkers(markers_new)
+                console.log('Изменение положения', markers);
+            }
+        })
+
     }
 
     useEffect(gps, [])
@@ -177,17 +175,18 @@ const Map = (props) => {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {/*{markers.map(marker => {*/}
-                {/*    return (*/}
-                {/*        <Marker key={marker.user} position={[marker.x, marker.y]}>*/}
-                {/*            /!*{console.log('x и y: ', marker.x, marker.y)}*!/*/}
-                {/*            <Tooltip permanent direction='top'>*/}
-                {/*                /!*{marker.user}*!/*/}
-                {/*            </Tooltip>*/}
-                {/*        </Marker>*/}
-                {/*    )*/}
-                {/*})*/}
-                {/*}*/}
+                {markers.map(marker => {
+                    return (
+                        <Marker key={marker.user} position={[marker.x, marker.y]}>
+                            {/*{console.log('x и y: ', marker.x, marker.y)}*/}
+                            <Tooltip permanent direction='top'>
+                                {marker.user}
+                            </Tooltip>
+                        </Marker>
+                    )
+                })
+                }
+
                 <Marker position={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}>
                     {/*<Popup>*/}
                     {/*    Нажатие*/}

@@ -20,12 +20,12 @@ const MainContainer = (props) => {
     const {Content} = Layout;
     return (
         <>
-            <Header />
+            <Header/>
             <Layout style={{height: `calc(100vh - 50px)`}}>
                 <LeftSidebar {...props}/>
                 <Layout>
                     <Content style={{margin: '0 16px'}}>
-                            <About />
+                        <About/>
                     </Content>
                 </Layout>
             </Layout>
@@ -40,9 +40,7 @@ let mapStateToProps = (state) => {
 }
 
 let mapDispatchToPropsLite =
-    {
-
-    }
+    {}
 
 export default compose(
     connect(mapStateToProps, mapDispatchToPropsLite),

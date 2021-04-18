@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Modal, Button} from "antd";
 
-export const ModalView = (props) => {
+export const ModalInfo = (props) => {
     const modalClose = () => {
-        props.setModal(false)
+        props.setModalInfo(false)
     }
 
     return (
@@ -13,7 +13,7 @@ export const ModalView = (props) => {
                 // maskTransitionName=""
                 transitionName=""
                 bodyStyle={{padding: '20px'}}
-                visible={props.modal}
+                visible={props.modalInfo}
                 width="50%"
                 maskClosable={false}
                 //onOk={modalClose}

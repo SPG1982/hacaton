@@ -2,13 +2,14 @@ import React, {useEffect, useState, useRef} from 'react';
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-import {Button, Layout} from "antd";
+import {Button, Row, Col, Layout} from "antd";
 import Header from "../../components/Header/Header";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import styles from "../Main/styles.module.css";
+import {ModalInfo} from "../Modals/ModalInfo";
+import {ModalCall} from "../Modals/ModalCall";
 
 const Container = styled.div`
   //height: 100vh;
@@ -18,19 +19,20 @@ const Container = styled.div`
   margin: 10px;
 `;
 
-const Row = styled.div`
-  display: flex;
-  width: 100%;
-`;
+// const Row = styled.div`
+//   display: flex;
+//   width: 100%;
+// `;
 
 const Video = styled.video`
   border: 1px solid blue;
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  max-width: 300px;
+  //height: 30%;
   margin: 5px;
 `;
 
-function Zoom(props) {
+function ZoomIframe(props) {
     const [yourID, setYourID] = useState("");
     const [users, setUsers] = useState({});
     const [stream, setStream] = useState();
@@ -67,6 +69,7 @@ function Zoom(props) {
 
 
         socket.current.on("allUsers", (users) => {
+            console.log(users)
             setUsers(users);
         })
 
@@ -124,6 +127,7 @@ function Zoom(props) {
         });
         peer.on("signal", data => {
             socket.current.emit("acceptCall", {signal: data, to: caller})
+
         })
 
         peer.on("stream", stream => {
@@ -150,67 +154,43 @@ function Zoom(props) {
     let incomingCall;
     if (receivingCall) {
         incomingCall = (
-            <div>
-                <h1 style={{backgroundColor: 'yellow', padding: '3px'}}>Входящий звонок: {users[caller]} </h1>
-                <Button onClick={acceptCall} type="primary">Принять</Button>
+            <div style={{margin: 'auto', textAlign: 'center'}}>
+                <h1 style={{backgroundColor: 'yellow', textAlign: 'center', padding: '3px'}}>Входящий
+                    звонок: {users[caller]} </h1>
+                <Button onClick={acceptCall} size="large" style={{margin: 'auto', textAlign: 'center'}}
+                        type="primary">Принять</Button>
             </div>
         )
     }
     return (
         <Container>
-            <h3 style={{textAlign: 'center'}}>{props.user}</h3>
+            {/*<h3 style={{textAlign: 'center'}}>{props.user}</h3>*/}
+            {/*{if (1 === 1) ? null : null}*/}
+            {(incomingCall && !callAccepted) && <ModalCall {...props} acceptCall={acceptCall} text={`Входящий звонок: ${users[caller]}`} />}
             <Row>
                 {UserVideo}
                 {PartnerVideo}
             </Row>
             <Row>
                 {Object.entries(users).map((user, i) => {
-                    console.log(user)
+                    // console.log(user)
                     if (user[0] === yourID) {
                         return null;
                     }
                     return (
-                        <Button style={{margin: '5px', whiteSpace: 'normal'}}  key={i} type="primary"
-                                onClick={() => callPeer(user[0])}>Позвонить {user[1]}
-                        </Button>
+                        <Col xs={24} sm={24} md={12} lg={6} xl={6} xxl={4} key={i}>
+                            <button style={{margin: '5px', backgroundColor: 'red', color: 'white'}} type="primary"
+                                    onClick={() => callPeer(user[0])}>Позвонить {user[1]}</button>
+                        </Col>
                     );
                 })}
             </Row>
             <Row>
-                {incomingCall}
+                {/*{!callAccepted && incomingCall}*/}
             </Row>
+
         </Container>
     );
 }
 
-const MainContainer = (props) => {
-    const {Content} = Layout;
-    return (
-        <>
-            <Header/>
-            <Layout style={{minHeight: `calc(100vh - 50px)`}}>
-                <LeftSidebar {...props}/>
-                <Layout>
-                    <Content style={{margin: '0 16px'}}>
-                        <Zoom {...props}/>
-                    </Content>
-                </Layout>
-            </Layout>
-        </>
-    );
-}
-
-let mapStateToProps = (state) => {
-    return {
-        app: state.app,
-        user: state.app.user,
-    }
-}
-
-let mapDispatchToPropsLite =
-    {}
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToPropsLite),
-    withRouter
-)(MainContainer)
+export default ZoomIframe

@@ -5,7 +5,7 @@
       <paths name="hacaton">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$/build" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -16,8 +16,10 @@ function App() {
     const [result, setResult] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
+    const MODEL_URL = process.env.PUBLIC_URL + '/modelsTf';
+
     useEffect(() => {
-        classifier = ml5.imageClassifier("./modelsTf/model.json", () => {
+        classifier = ml5.imageClassifier(MODEL_URL + "/model.json", () => {
             navigator.mediaDevices
                 .getUserMedia({ video: true, audio: false })
                 .then((stream) => {
@@ -72,7 +74,7 @@ function App() {
                 </div>
                 {result.length > 0 && (
                     <div>
-                        {console.log(result)}
+                        {/*{console.log(result)}*/}
                         <Chart data={result[0]} />
                     </div>
                 )}

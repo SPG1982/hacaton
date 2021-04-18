@@ -115,13 +115,13 @@ const Photo = (props) => {
             >
                 <audio id='sound' ref={audioRef}></audio>
 
-                <div style={{width: "75%", margin: "auto", fontSize: '20px', textAlign: 'center'}}>
-                    <Button style={{margin: '10px auto', fontSize: '20px'}} type="primary" disabled={blocked}
+                <div style={{width: "75%", margin: "auto", fontSize: '18px', textAlign: 'center'}}>
+                    <button style={{margin: '10px auto', backgroundColor: 'blue', color: 'white', whiteSpace: 'normal', fontSize: '1em'}} type="primary" disabled={blocked}
                             size="large" onClick={() => {
                         (props.audio === 'sound') ? playSound('1.mp3') : sayText(questions[1])
                     }}>
-                        {listening ? <div>Идет распознавание речи</div> : <div>Обратиться к дежурному</div>}
-                    </Button>
+                        {listening ? 'Идет распознавание речи' : 'Обратиться к дежурному'}
+                    </button>
                     {/*{listening && <div>*/}
                     {/*    <div style={{backgroundColor: "white", marginTop: '150px'}}>...</div>*/}
                     {/*    <br></br></div>*/}

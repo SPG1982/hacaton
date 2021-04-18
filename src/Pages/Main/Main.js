@@ -3,7 +3,7 @@ import {compose} from "redux";
 import {connect, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 import Header from "../../components/Header/Header";
-import {Layout} from "antd";
+import {Layout, Menu} from "antd";
 import styles from './styles.module.css'
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
 
@@ -41,7 +41,7 @@ const MainContainer = (props) => {
     return (
         <>
             <Header/>
-            <Layout style={{height: `calc(100vh - 50px)`}}>
+            <Layout style={{minHeight: `calc(100vh - 50px)`}}>
                 <LeftSidebar {...props}/>
                 <Layout>
                     <Content style={{margin: '0 16px'}}>

@@ -3,7 +3,8 @@ const QUESTIONS = 'app/QUESTIONS'
 const ANSWERS = 'app/ANSWERS'
 const AUDIO = 'app/AUDIO'
 const USER = 'app/USER'
-const MODAL = 'app/MODAL'
+const MODALINFO = 'app/MODALINFO'
+const MODALCALL = 'app/MODALCALL'
 
 
 let initialState = {
@@ -12,7 +13,8 @@ let initialState = {
     questions: [],
     answers: [],
     user: 'Наряд №' + Math.round(Math.random()*100),
-    modal: false
+    modalInfo: false,
+    modalCall: true
 }
 
 export const AppReducer = (state = initialState, action) => {
@@ -46,9 +48,15 @@ export const AppReducer = (state = initialState, action) => {
             }
         }
 
-        case MODAL: {
+        case MODALINFO: {
             return {
-                ...state, modal: action.view
+                ...state, modalInfo: action.view
+            }
+        }
+
+        case MODALCALL: {
+            return {
+                ...state, modalCall: action.view
             }
         }
 
@@ -77,8 +85,12 @@ export const setAudio = (typeAudio) => {
     return {type: AUDIO, typeAudio}
 }
 
-export const setModal = (view) => {
-    return {type: MODAL, view}
+export const setModalInfo = (view) => {
+    return {type: MODALINFO, view}
+}
+
+export const setModalCall = (view) => {
+    return {type: MODALCALL, view}
 }
 
 

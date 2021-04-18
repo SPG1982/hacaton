@@ -8,9 +8,9 @@ const Dialog = (props) => {
 
     return (
         <>
-            <div style={{width: '95%', height: '400px', margin: 'auto'}}>
+            <div style={{width: '95%', height: '', margin: 'auto'}}>
                 <h2 style={{textAlign: 'center'}}>Диалог с дежурным</h2>
-                <div style={{border: '1px solid black', height: '100%', overflowY: 'auto'}}>
+                <div style={{border: '1px solid black', height: '', overflowY: 'auto'}}>
 
 
                     {props.questions.map((q, i) => {

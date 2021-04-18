@@ -3,7 +3,7 @@ import {compose} from "redux";
 import {connect, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 import Header from "../../components/Header/Header";
-import {Layout} from "antd";
+import {Col, Layout, Row} from "antd";
 import './css.css'
 import 'leaflet/dist/leaflet.css'
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
@@ -14,10 +14,12 @@ import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch'
-import {addAnswer, addQuestion, setAudio, setModal, setUser} from "../../redux/reducers/app-reducer";
+import {addAnswer, addQuestion, setAudio, setModalCall, setModalInfo, setUser} from "../../redux/reducers/app-reducer";
 // import socket from "../../components/Socket/Socket";
-import {ModalView} from "../../components/Modals/ModalView";
+import {ModalInfo} from "../../components/Modals/ModalInfo";
 import io from "socket.io-client";
+import ZoomIframe from "../../components/ZoomIframe/ZoomIframe";
+import {ModalCall} from "../../components/Modals/ModalCall";
 
 
 const Police = (props) => {
@@ -34,7 +36,7 @@ const Police = (props) => {
     // -------------------------- Первоначальная установка GPS
 
     function success(position) {
-        setCrd([position.coords.latitude + 0.01, position.coords.longitude])
+        setCrd([position.coords.latitude, position.coords.longitude])
         socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
         console.log('GPS')
     }
@@ -149,21 +151,23 @@ const Police = (props) => {
 // ----------------------
     return (
         <>
-            <div style={{display: "flex", justifyContent: 'space-between', margin: '5px'}}>
-                <div style={{margin: 'auto'}}>
-                    <h2 style={{textAlign: 'center', display: 'inline'}}>Местоположение нарядов</h2>
-                    <input style={{textAlign: 'center', marginLeft: '10px', display: 'inline', fontSize: '18px'}}
+            <Row style={{margin: '5px'}}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8}>
+                    <h2 style={{textAlign: 'center'}}>НАРЯДЫ</h2>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8} style={{margin: 'auto', textAlign: 'center'}}>
+                    <input style={{textAlign: 'center', width: '60%', margin: 'auto', fontSize: '18px'}}
                            onChange={(e) => {
                                setUser(e)
                            }} value={props.user}/>
-                </div>
-            </div>
-            <ModalView {...props} />
+                </Col>
+            </Row>
+            <ModalInfo {...props} />
 
             <MapContainer
                 id="mapJS"
                 className='mapGpsPolice'
-                center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} zoom={12} zoomControl={true}
+                center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} zoom={15} zoomControl={true}
                 scrollWheelZoom={true}
             >
                 <ChangeView center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}/>
@@ -197,6 +201,7 @@ const Police = (props) => {
                         {props.user}
                     </Tooltip>
                 </Marker>
+                {/*{false && <ModalInfo  />}*/}
             </MapContainer>
         </>
     )
@@ -208,11 +213,12 @@ const Container = (props) => {
     return (
         <>
             <Header/>
-            <Layout style={{height: `calc(100vh - 50px)`}}>
+            <Layout style={{minHeight: `calc(100vh - 50px)`}}>
                 <LeftSidebar {...props}/>
                 <Layout>
                     <Content style={{margin: '0 16px'}}>
                         <Police {...props}/>
+                        <ZoomIframe {...props}/>
                     </Content>
                 </Layout>
             </Layout>
@@ -227,12 +233,13 @@ let mapStateToProps = (state) => {
         questions: state.app.questions,
         audio: state.app.audio,
         user: state.app.user,
-        modal: state.app.modal
+        modalInfo: state.app.modalInfo,
+        modalCall: state.app.modalCall
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio, setUser, setModal}
+    {addAnswer, addQuestion, setAudio, setUser, setModalInfo, setModalCall}
 
 
 export default compose(
