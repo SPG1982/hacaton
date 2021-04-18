@@ -11,6 +11,7 @@ const Webcam = (props) => {
     const videoRef = useRef()
     const canvasRef = useRef()
     const contRef = useRef()
+    let interval
 
     const [isMounted, setMounted] = useState(true)
 
@@ -32,6 +33,8 @@ const Webcam = (props) => {
         loadModels();
         return () => {
             setMounted(false)
+            clearInterval(interval)
+            console.log('Размонтирование')
         }
     }, [])
 
@@ -56,8 +59,10 @@ const Webcam = (props) => {
         widthVideo = document.querySelector('#containerVideo').offsetWidth
         heightVideo = document.querySelector('#containerVideo').offsetHeight - 6
         faceApi.matchDimensions(canvasRef.current, {width: widthVideo, height: heightVideo});
-        setInterval(async () => {
+        interval = setInterval(async () => {
+            // if (!isMounted) clearInterval(interval)
             try {
+                // console.log('Интервал')
                 const detections = await faceApi.detectAllFaces(videoRef.current, new faceApi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender().withFaceExpressions().withFaceDescriptors();
                 const resizedDetections = faceApi.resizeResults(detections, {width: widthVideo, height: heightVideo});
 
@@ -74,14 +79,16 @@ const Webcam = (props) => {
                     const box = resizedDetections[i].detection.box;
                     const drawBox = new faceApi.draw.DrawBox(box, {label: result.toString()});
                     drawBox.draw(canvasRef.current);
-                    if (word(result.toString()) == 'Pavel') {
-                        console.log(word(result.toString()));
-                        setFind('Смагин Павел')
+                    if (word(result.toString()) !== 'unknown') {
+                        //console.log(word(result.toString()));
+                        //setFind('Смагин Павел')
+                        setFind(word(result.toString()))
                     }
 
                     function word(str) {
                         let ars = str.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '').replace(/\s+/gi, ', ');
-                        return ars;
+                        //return ars;
+                        return str.replace(/[^a-zа-яё ]/gi, '').trim()
                     }
                 })
             } catch (e) {
@@ -92,7 +99,7 @@ const Webcam = (props) => {
     }
 
     function loadLabeledImages() {
-        const labels = ['Pavel']
+        const labels = ['Смагин Павел']
         return Promise.all(
             labels.map(async label => {
                 let descriptions = [];

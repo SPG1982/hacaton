@@ -4,6 +4,9 @@ const Images = (props) => {
   const mostMatched = props.data[0];
   const allLabels = props.data.map((elem) => elem.label);
   const sortedLabels = allLabels.sort((a, b) => a.localeCompare(b));
+
+  const MODEL_URL = process.env.PUBLIC_URL + '/images';
+
   return (
     <>
       <ul className="images">
@@ -16,8 +19,8 @@ const Images = (props) => {
                 }`}
                 src={
                   label === ""
-                    ? "./images/No.png"
-                    : `./images/${label}.png`
+                    ? MODEL_URL + "/No.png"
+                    : MODEL_URL + `/${label}.png`
                 }
                 alt={label}
               />

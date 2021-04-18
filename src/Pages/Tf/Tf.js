@@ -6,17 +6,23 @@ import './css.css'
 import Images from './Images';
 import Chart from './Chart';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import {Layout} from "antd";
+import Header from "../../components/Header/Header";
+import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
+import {compose} from "redux";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 
 
 let classifier;
 
-function App() {
+function Tf() {
     const videoRef = useRef();
     const [start, setStart] = useState(false);
     const [result, setResult] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
-    const MODEL_URL = process.env.PUBLIC_URL + '/modelsTf';
+    const MODEL_URL = process.env.PUBLIC_URL + '/modelstf';
 
     useEffect(() => {
         classifier = ml5.imageClassifier(MODEL_URL + "/model.json", () => {
@@ -50,14 +56,14 @@ function App() {
 
     return (
         <div className="container">
-            <Loader
-                type="Watch"
-                color="#00BFFF"
-                height={200}
-                width={200}
-                visible={!loaded}
-                style={{display:'flex', justifyContent:'center', marginTop:'30px' }}
-            />
+            {/*<Loader*/}
+            {/*    type="Watch"*/}
+            {/*    color="#00BFFF"*/}
+            {/*    height={200}*/}
+            {/*    width={200}*/}
+            {/*    visible={!loaded}*/}
+            {/*    style={{display:'flex', justifyContent:'center', marginTop:'30px' }}*/}
+            {/*/>*/}
             <div className="upper">
                 <div className="capture">
                     <video
@@ -88,4 +94,33 @@ function App() {
     );
 }
 
-export default App;
+const MainContainer = (props) => {
+    const {Content} = Layout;
+    return (
+        <>
+            <Header/>
+            <Layout style={{height: `calc(100vh - 50px)`}}>
+                <LeftSidebar {...props}/>
+                <Layout>
+                    <Content style={{margin: '0 16px'}}>
+                        <Tf/>
+                    </Content>
+                </Layout>
+            </Layout>
+        </>
+    );
+}
+
+let mapStateToProps = (state) => {
+    return {
+        app: state.app,
+    }
+}
+
+let mapDispatchToPropsLite =
+    {}
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToPropsLite),
+    withRouter
+)(MainContainer)
