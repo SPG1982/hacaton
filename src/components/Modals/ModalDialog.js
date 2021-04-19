@@ -27,7 +27,7 @@ export const ModalDialog = (props) => {
                     <div>
                         <h3 style={{padding: '3px', backgroundColor: 'blue', color: 'white'}}>Кратко расскажите что случилось...</h3>
                     </div>
-                    <h2 style={{minHeight: '100px', border: '1px solid blue', textAlign: 'justify'}}>
+                    <h2 style={{minHeight: '300px', border: '1px solid blue', textAlign: 'justify'}}>
                         <span>Показания: </span> {props.lastAnswer}
                     </h2>
 

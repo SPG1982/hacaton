@@ -27,14 +27,9 @@ const BrainIframe = (props) => {
     // console.log(classifierN.classify('напал'));
     // console.log(classifierN.getClassifications('бил'));
 
-    const TEXT_URL = process.env.PUBLIC_URL + 'texts/кража/1.txt';
-
-    let crime_txt = ''
-
-
     useEffect(() => {
         async function loadTexts() {
-            const crimes = ['кража', 'грабеж']
+            const crimes = ['отказ', 'кража', 'грабеж']
 
             const fetchText = (crime, i) => fetch(process.env.PUBLIC_URL + '/texts/' + crime + '/' + i + '.txt')
                 .then((response) => {
@@ -62,22 +57,20 @@ const BrainIframe = (props) => {
             classifierN.train();
             // console.log(classifierN)
             setClassN(classifierN)
-            //console.log(classifierN.getClassifications('своровали'));
+            console.log(classifierN.getClassifications('лдррдло'));
+            console.log(classifierN.classify('лдррдло'));
 
         }
-
-        //console.log(classifierN)
         loadTexts()
     }, [])
 
 
     useEffect(() => {
-        console.log('useEffect')
-        if (props.answers.length > 3) {
-            console.log(props.answers[3])
-            console.log(classN);
-            props.setPredSostav(classN.classify(props.answers[3]))
-           //props.setPredSostav(classifierN.classify('кража'))
+        if (props.answers.length == 5) {
+            console.log('Квалификация...')
+            //console.log(props.answers[4])
+            //console.log(classN);
+            props.setPredSostav(classN.classify(props.answers[4]))
         }
     }, [props.answers])
 

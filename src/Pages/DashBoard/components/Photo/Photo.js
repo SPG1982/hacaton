@@ -11,7 +11,7 @@ const Photo = (props) => {
     const audioRef = useRef()
     const [voiceIndex, setVoiceIndex] = useState(null);
     const [questions, setQuestions] = useState({});
-    const [question, setQuestion] = useState(0);
+    const [question, setQuestion] = useState(1);
     const [answers, setAnswers] = useState([]);
     const [lastAnswer, setLastAnswer] = useState('');
     const [answer, setAnswer] = useState('');
@@ -36,34 +36,59 @@ const Photo = (props) => {
     };
 
     useEffect(() => {
+
+        let counter = 0;
+
+        for (let key in questions[questionBlock]) {
+            counter++;
+        }
+
         const intervalId = setInterval(() => {
-            if (question === 4 && !answer) {
+            console.log(question)
+            if (question === 5 && !answer && questionBlock == 'база') {
                 props.setModalDialog(true)
             }
             if (answer && (lastAnswer === answer)) {
-                console.log(question)
-                if (question !== 4) {
+                if (question !== 5 && questionBlock == 'база' && counter >= question) {
                     props.setModalDialog(false)
                     setTimeout(stop, 100)
                     console.log('Остановка распознавания')
                     props.addAnswer(answer)
-                    props.audio === 'sound' ? playSound(question + '.mp3') : sayText(questions.база[question].question)
+                    props.audio === 'sound' ? playSound(question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
+                    setQuestion(question + 1)
                     setAnswer('')
-                } else {
-                    if (answer.indexOf('ответ закончен') !== -1 || answer.indexOf('ответ закончил') !== -1 || props.modalDialog == false) {
-                        console.log('1111')
-                        props.setModalDialog(false)
+                }
+                if ((question == 5 && questionBlock == 'база') && (answer.indexOf('ответ закончен') !== -1 || answer.indexOf('ответ закончил') !== -1 || props.modalDialog == false)) {
+                    if (questionBlock == 'база' && props.answers.length <= 4) {
                         props.addAnswer(answer)
-                        props.audio === 'sound' ? playSound(question + '.mp3') : sayText(questions.база[question].question)
+                        props.setModalDialog(false)
+                    } else if (props.predSostav !== '') {
+                        console.log(props.predSostav)
                         setAnswer('')
+                        setQuestionBlock(props.predSostav)
+                        setQuestion(1)
+                        props.audio === 'sound' ? playSound((props.predSostav) + '/1.mp3') : sayText(questions[props.predSostav][1].question)
                     }
+                }
+                if ((questionBlock !== 'база' && counter > question)) {
+                    setQuestion(question + 1)
+                    props.addAnswer(answer)
+                    props.audio === 'sound' ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
+                    setAnswer('')
+                }
+                if ((questionBlock !== 'база' && counter == question)) {
+                    props.addAnswer(answer)
+                    stop()
+                    // ЗАПУСК ОКНА ДЛЯ НАРЯДОВ
+                    console.log('КОНЕЦ')
+                    setAnswer('')
                 }
             } else {
                 setLastAnswer(answer)
             }
         }, 1000)
         return () => clearInterval(intervalId);
-    }, [answer, lastAnswer, props.modalDialog])
+    }, [answer, lastAnswer, props.modalDialog, question, props.predSostav])
 
 
     const {listen, listening, stop} = useSpeechRecognition({
@@ -76,33 +101,31 @@ const Photo = (props) => {
     function playSound(url) {
         audioRef.current.src = SOUNDS_URL + '/' + url
         audioRef.current.play()
-        props.addQuestion(questions.база[question].question)
+        props.addQuestion(questions[questionBlock][question].question)
         audioRef.current.onended = () => {
             listen({interimResults: true, continuous: true, lang});
             console.log('Запуск распознавания')
         };
-        setQuestion(question + 1)
     }
 
     useEffect(() => {
         setQuestions({
             база: {
-                0: {key: 'fio', question: 'Назовите фамилию, имя, отчество'},
-                1: {key: 'date', question: 'Укажите дату события'},
-                2: {key: 'time', question: 'Уточните время'},
-                3: {key: 'text', question: 'Что произошло?'},
+                1: {key: 'fio', question: 'Назовите фамилию, имя, отчество'},
+                2: {key: 'date', question: 'Укажите дату события'},
+                3: {key: 'time', question: 'Уточните время'},
+                4: {key: 'address', question: 'Укажите адрес, где все случилось'},
+                5: {key: 'text', question: 'Что произошло?'},
+            },
+            отказ: {
+                1: {question: 'По вашим показаниям преступления не установлено'},
+                2: {question: 'Вы можете обжаловать наши действия...'},
             },
             кража: {
-
-            }, грабеж: {
-
-            }, разбой: {
-
-            }, мошенничество: {
-
-            }, вымогательство: {
-
-            },
+                1: {key: 'sposob', question: 'Откуда было похищено имущество и каким способом'},
+                2: {key: 'predmet', question: 'Что именно было похищено'},
+                3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
+            }, грабеж: {}, разбой: {}, мошенничество: {}, вымогательство: {},
         });
     }, [])
 
@@ -111,7 +134,6 @@ const Photo = (props) => {
         stop()
         props.addQuestion(text)
         speak({text, voice})
-        setQuestion(question + 1)
     }
 
     //useEffect(sayText, [answer])
@@ -144,7 +166,7 @@ const Photo = (props) => {
                         fontSize: '1em'
                     }} type="primary" disabled={blocked}
                             size="large" onClick={() => {
-                        (props.audio === 'sound') ? playSound(question + '.mp3') : sayText(questions.база[question].question)
+                        (props.audio === 'sound') ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question].question)
                     }}>
                         {listening ? 'Идет распознавание речи' : 'Обратиться к дежурному'}
                     </button>
@@ -163,8 +185,11 @@ const Photo = (props) => {
                         : null
                     }
                     {listening && <div style={{marginTop: '120px'}}>
-                        <div style={{backgroundColor: 'red', color: 'white'}}>Вопрос: {questions[questionBlock][question].question}</div>
-                        {question !== 4 && <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
+                        <div style={{
+                            backgroundColor: 'red',
+                            color: 'white'
+                        }}>Вопрос: {questions[questionBlock][question].question}</div>
+                        {(question !== 5 || questionBlock !== 'база') && <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
                     </div>}
                 </div>
             </div>

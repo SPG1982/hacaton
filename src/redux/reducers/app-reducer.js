@@ -27,12 +27,13 @@ let initialState = {
         fio: '',
         date: '',
         time: '',
+        address: '',
         sposob: '',
+        text: '',
         predmet: '',
         life: '',
         summ: '',
         sostav: '',
-        text: '',
         itogText: ''
     }
 }
@@ -54,7 +55,7 @@ export const AppReducer = (state = initialState, action) => {
 
         case QUESTIONS: {
             return {
-                ...state, questions: [...state.questions, action.answer]
+                ...state, questions: [...state.questions, action.question]
             }
         }
 
