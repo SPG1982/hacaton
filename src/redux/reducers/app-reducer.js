@@ -5,8 +5,10 @@ const AUDIO = 'app/AUDIO'
 const USER = 'app/USER'
 const MODALINFO = 'app/MODALINFO'
 const MODALCALL = 'app/MODALCALL'
+const MODALDIALOG = 'app/MODALDIALOG'
 const WARNING = 'app/WARNING'
 const CRIME = 'app/CRIME'
+const PREDSOSTAV = 'app/PREDSOSTAV'
 
 
 let initialState = {
@@ -14,10 +16,13 @@ let initialState = {
     audio: 'speech',
     questions: [],
     answers: [],
-    user: 'Наряд №' + Math.round(Math.random()*100),
+    user: 'Наряд №' + Math.round(Math.random() * 100),
     modalInfo: false,
     modalCall: true,
+    modalDialog: false,
     warning: '',
+    predSostav: '',
+    predSostavAnalyze: false,
     crime: {
         fio: '',
         date: '',
@@ -28,7 +33,7 @@ let initialState = {
         summ: '',
         sostav: '',
         text: '',
-
+        itogText: ''
     }
 }
 
@@ -47,19 +52,16 @@ export const AppReducer = (state = initialState, action) => {
             return {...state, audio: action.typeAudio}
         }
 
-        case APP_INITIALIZED: {
-            return {...state, initialized: true}
-        }
-
         case QUESTIONS: {
             return {
-                ...state, ...state.questions.push(action.question)
+                ...state, questions: [...state.questions, action.answer]
             }
         }
 
         case ANSWERS: {
             return {
-                ...state, ...state.answers.push(action.answer)
+                ...state, answers: [...state.answers, action.answer]
+                // ...state, ...state.answers.push(action.answer)
             }
         }
 
@@ -75,6 +77,12 @@ export const AppReducer = (state = initialState, action) => {
             }
         }
 
+        case MODALDIALOG: {
+            return {
+                ...state, modalDialog: action.view
+            }
+        }
+
         case WARNING: {
             return {
                 ...state, warning: action.text
@@ -83,7 +91,13 @@ export const AppReducer = (state = initialState, action) => {
 
         case CRIME: {
             return {
-                ...state, crime: action.text
+                ...state, crime: {...state.crime, [action.data.key]: action.data.text}
+            }
+        }
+
+        case PREDSOSTAV: {
+            return {
+                ...state, predSostav: action.text
             }
         }
 
@@ -120,12 +134,20 @@ export const setModalCall = (view) => {
     return {type: MODALCALL, view}
 }
 
+export const setModalDialog = (view) => {
+    return {type: MODALDIALOG, view}
+}
+
 export const setWarning = (text) => {
     return {type: WARNING, text}
 }
 
 export const setCrime = (data) => {
     return {type: CRIME, data}
+}
+
+export const setPredSostav = (text) => {
+    return {type: PREDSOSTAV, text}
 }
 
 

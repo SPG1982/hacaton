@@ -12,8 +12,17 @@ import Photo from "./components/Photo/Photo";
 import Webcam from "./components/Webcam/Webcam";
 import Dialog from "./components/Dialog/Dialog";
 import Form from "./components/Form/Form";
-import {addAnswer, addQuestion, setAudio, setCrime, setUser, setWarning} from "../../redux/reducers/app-reducer";
+import {
+    addAnswer,
+    addQuestion,
+    setAudio,
+    setCrime,
+    setModalDialog, setPredSostav,
+    setUser,
+    setWarning
+} from "../../redux/reducers/app-reducer";
 import BrainIframe from "../../components/BrainIframe/BrainIframe";
+import {ModalDialog} from "../../components/Modals/ModalDialog";
 
 const DashBoard = (props) => {
     //console.log(props)
@@ -44,10 +53,10 @@ const DashBoard = (props) => {
             <br></br>
             <Row>
                 <Col xs={24} sm={24} md={16} lg={16}>
-                    {/*<Dialog {...props}/>*/}
+                    <Dialog {...props}/>
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8}>
-                    {/*<Form {...props}/>*/}
+                    <Form {...props}/>
                 </Col>
             </Row>
         </div>
@@ -81,12 +90,15 @@ let mapStateToProps = (state) => {
         audio: state.app.audio,
         user: state.app.user,
         warning: state.app.warning,
-        crime: state.app.crime
+        crime: state.app.crime,
+        modalDialog: state.app.modalDialog,
+        predSostav: state.app.predSostav
+
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio, setUser, setWarning, setCrime}
+    {addAnswer, addQuestion, setAudio, setUser, setWarning, setCrime, setModalDialog, setPredSostav}
 
 export default compose(
     connect(mapStateToProps, mapDispatchToPropsLite),
