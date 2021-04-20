@@ -4,12 +4,6 @@ import {connect, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
 
 const Form = (props) => {
-// console.log(props)
-
-
-
-
-
     useEffect(()=> {
         let text = document.querySelector('.crimeText')
         console.log(text.innerHTML)

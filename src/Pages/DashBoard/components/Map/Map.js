@@ -22,7 +22,7 @@ import io from "socket.io-client";
 
 
 const Map = (props) => {
-
+console.log(props)
     const [markers, setMarkers] = useState([]);
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
@@ -91,9 +91,10 @@ const Map = (props) => {
     L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.7.1/dist/images/"
 
     useEffect(() => {
+        props.crime.itogText && socket.current.emit('CRIME', {'text': props.warning})
         //const map = mapRef.current;
         //mapJS = L.map('mapJS').setView([51.620972, 39.062980], 12);
-    })
+    }, [props.crime.itogText])
 
     function ChangeView({center}) {
         let map = useMap();

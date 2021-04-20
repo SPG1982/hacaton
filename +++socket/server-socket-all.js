@@ -38,7 +38,7 @@ io.on('connection', socket => {
     socket.on('GPS', ({ user, x, y }, callback) => {
         //callback(X);
         socket.broadcast.emit('BROADCAST:GPS', { 'user': user, 'x': x, 'y': y });
-        console.log(user, x, y)
+        //console.log(user, x, y)
     });
 
 
@@ -52,13 +52,13 @@ io.on('connection', socket => {
     // }
 
     socket.emit("yourID", socket.id, (user) => {
-        console.log('Ответ сокета User: ' + user)
+        //console.log('Ответ сокета User: ' + user)
         if (!map.has(user)) {
             map.set(user, socket.id)
         }
 
         if (!users[socket.id]) {
-            console.log('Новый user ' + user)
+            //console.log('Новый user ' + user)
             users[socket.id] = user;
         }
 
@@ -88,7 +88,7 @@ io.on('connection', socket => {
                 console.log(users)
             }
         }
-        console.log(users)
+        //console.log(users)
 
     });
 
@@ -96,7 +96,7 @@ io.on('connection', socket => {
     // io.sockets.emit("allUsers", sockets);
 
     socket.on('disconnect', () => {
-        console.log('Disconnect ' + socket.id)
+        //console.log('Disconnect ' + socket.id)
         // delete sockets[socket.id]
         delete users[socket.id]
         io.sockets.emit("allUsers", users);
