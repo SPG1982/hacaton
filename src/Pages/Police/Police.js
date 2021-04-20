@@ -41,6 +41,8 @@ const Police = (props) => {
     let mapJS
     let mapRef = useRef()
 
+
+
     // -------------------------- Первоначальная установка GPS
 
     function success(position) {
@@ -73,6 +75,15 @@ const Police = (props) => {
         // setInterval(() => {
         //
         // }, 1000);
+
+        socket.current.on('BROADCAST:CRIME', (data) => {
+            console.log('Сообщение Сокета: ' + data.text)
+            if (!props.warning) {
+                props.setWarning(data.text)
+                props.setModalInfo(true)
+            }
+        })
+
 
         socket.current.on('BROADCAST:GPS', (data) => {
             console.log('Сообщение Сокета: ' + data.user)

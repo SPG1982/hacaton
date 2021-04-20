@@ -86,7 +86,7 @@ export const AppReducer = (state = initialState, action) => {
 
         case WARNING: {
             return {
-                ...state, warning: action.text
+                ...state, warning: action.text, modalInfo: true
             }
         }
 

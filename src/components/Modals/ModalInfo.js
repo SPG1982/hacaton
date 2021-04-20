@@ -21,8 +21,8 @@ export const ModalInfo = (props) => {
                 footer={null}
                 destroyOnClose={true}
             >
-
                 <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <h3>{props.warning}</h3>
                     <Button style={{margin: '10px auto', display: 'inline-block', textAlign: 'center', width: 'auto'}}
                             type="primary"
                             onClick={() => {

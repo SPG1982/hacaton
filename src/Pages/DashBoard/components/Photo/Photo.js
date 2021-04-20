@@ -60,13 +60,15 @@ const Photo = (props) => {
                 }
                 if ((question == 5 && questionBlock == 'база') && (answer.indexOf('ответ закончен') !== -1 || answer.indexOf('ответ закончил') !== -1 || props.modalDialog == false)) {
                     if (questionBlock == 'база' && props.answers.length <= 4) {
+                        console.log('q=5 + база' + props.predSostav)
                         props.addAnswer(answer)
                         props.setModalDialog(false)
                     } else if (props.predSostav !== '') {
-                        console.log(props.predSostav)
+                        console.log('q=5 + не база ' + props.predSostav)
                         setAnswer('')
-                        setQuestionBlock(props.predSostav)
                         setQuestion(1)
+                        setQuestionBlock(props.predSostav)
+                        console.log(questions[props.predSostav][1].question)
                         props.audio === 'sound' ? playSound((props.predSostav) + '/1.mp3') : sayText(questions[props.predSostav][1].question)
                     }
                 }
@@ -79,10 +81,13 @@ const Photo = (props) => {
                 if ((questionBlock !== 'база' && counter == question)) {
                     props.addAnswer(answer)
                     stop()
-                    // ЗАПУСК ОКНА ДЛЯ НАРЯДОВ
+                    props.setCrime({key: 'itogText', text : true})
                     console.log('КОНЕЦ')
                     setAnswer('')
                 }
+
+                props.setCrime({key: questions[questionBlock][question].key, text : answer})
+
             } else {
                 setLastAnswer(answer)
             }
@@ -118,8 +123,8 @@ const Photo = (props) => {
                 5: {key: 'text', question: 'Что произошло?'},
             },
             отказ: {
-                1: {question: 'По вашим показаниям преступления не установлено'},
-                2: {question: 'Вы можете обжаловать наши действия...'},
+                1: {key: 'text', question: 'По вашим показаниям преступления не установлено'},
+                2: {key: 'text', question: 'Вы можете обжаловать наши действия...'},
             },
             кража: {
                 1: {key: 'sposob', question: 'Откуда было похищено имущество и каким способом'},
@@ -189,7 +194,8 @@ const Photo = (props) => {
                             backgroundColor: 'red',
                             color: 'white'
                         }}>Вопрос: {questions[questionBlock][question].question}</div>
-                        {(question !== 5 || questionBlock !== 'база') && <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
+                        {(question !== 5 || questionBlock !== 'база') &&
+                        <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
                     </div>}
                 </div>
             </div>

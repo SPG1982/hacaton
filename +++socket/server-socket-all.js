@@ -41,6 +41,12 @@ io.on('connection', socket => {
         console.log(user, x, y)
     });
 
+
+    socket.on('CRIME', ({ text }, callback) => {
+        //callback(X);
+        socket.broadcast.emit('BROADCAST:CRIME', { 'text': text });
+    });
+
     // if (!sockets[socket.id]) {
     //     sockets[socket.id] = socket.id;
     // }
