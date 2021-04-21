@@ -44,7 +44,8 @@ const Photo = (props) => {
         }
 
         const intervalId = setInterval(() => {
-            console.log(question)
+            //console.log(question)
+            // props.setCrime({key: 'itogText', text : true})
             if (question === 5 && !answer && questionBlock == 'база') {
                 props.setModalDialog(true)
             }
@@ -75,6 +76,7 @@ const Photo = (props) => {
                 if ((questionBlock !== 'база' && counter > question)) {
                     setQuestion(question + 1)
                     props.addAnswer(answer)
+                    props.setCrime({key: questions[questionBlock][question].key, text : questions[questionBlock][question].crime})
                     props.audio === 'sound' ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
                     setAnswer('')
                 }
@@ -82,6 +84,7 @@ const Photo = (props) => {
                     props.addAnswer(answer)
                     stop()
                     props.setCrime({key: 'itogText', text : true})
+                    props.setCrime({key: questions[questionBlock][question].key, text : questions[questionBlock][question].crime})
                     console.log('КОНЕЦ')
                     setAnswer('')
                 }
@@ -127,7 +130,7 @@ const Photo = (props) => {
                 2: {key: 'text', question: 'Вы можете обжаловать наши действия...'},
             },
             кража: {
-                1: {key: 'sposob', question: 'Откуда было похищено имущество и каким способом'},
+                1: {key: 'sposob', crime: 'тайное хищение чужого имущества (кража)', question: 'Откуда было похищено имущество и каким способом'},
                 2: {key: 'predmet', question: 'Что именно было похищено'},
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
             }, грабеж: {}, разбой: {}, мошенничество: {}, вымогательство: {},

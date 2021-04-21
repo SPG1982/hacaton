@@ -3,12 +3,6 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 import {Button, Row, Col, Layout} from "antd";
-import Header from "../../components/Header/Header";
-import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
-import {compose} from "redux";
-import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
-import {ModalInfo} from "../Modals/ModalInfo";
 import {ModalCall} from "../Modals/ModalCall";
 
 const Container = styled.div`

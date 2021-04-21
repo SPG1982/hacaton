@@ -29,11 +29,11 @@ let initialState = {
         time: '',
         address: '',
         sposob: '',
-        text: '',
         predmet: '',
         life: '',
         summ: '',
         sostav: '',
+        text: '',
         itogText: ''
     }
 }
@@ -86,7 +86,7 @@ export const AppReducer = (state = initialState, action) => {
 
         case WARNING: {
             return {
-                ...state, warning: action.text, modalInfo: true
+                ...state, warning: action.text
             }
         }
 

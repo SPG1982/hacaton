@@ -87,7 +87,7 @@ function Tf() {
                 )}
             </div>
             {result.length > 0 && (
-                <div className="results">
+                <div className="resTF">
                     <Images data={result} />
                 </div>
             )}

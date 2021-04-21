@@ -57,8 +57,8 @@ const BrainIframe = (props) => {
             classifierN.train();
             // console.log(classifierN)
             setClassN(classifierN)
-            console.log(classifierN.getClassifications('лдррдло'));
-            console.log(classifierN.classify('лдррдло'));
+            //console.log(classifierN.getClassifications('лдррдло'));
+            //console.log(classifierN.classify('лдррдло'));
 
         }
         loadTexts()

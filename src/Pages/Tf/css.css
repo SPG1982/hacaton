@@ -40,10 +40,10 @@ body {
     background-color: blue;
 }
 
-.results {
+.resTF {
     margin-top: 40px;
 }
-.results .selected {
+.resTF .selected {
     border: 2px solid gold;
     animation: moveIt 5s infinite;
 }
@@ -54,25 +54,25 @@ body {
     100% {border: 4px solid rgb(179, 150, 24);}
 }
 
-.results .images {
+.resTF .images {
     list-style-type: none;
     display: flex;
     justify-content: center;
     position: relative;
 }
 
-.results .images li {
+.resTF .images li {
     padding: 15px 0px 0px 15px;
 }
 
-.results .images .img {
+.resTF .images .img {
     border-radius: 50%;
     width: 100px;
     height: 90px;
     padding: 5px;
 }
 
-.results .images .name {
+.resTF .images .name {
     margin: 0;
     padding: 0;
     text-align: center;

@@ -32,7 +32,7 @@ const Form = (props) => {
 
                     {props.crime.fio
                         ?
-                        <div className="crimeText">{'В отдел полиции обратился(лась) гр. ' + props.crime.fio + ' с заявлением о том, что ' + props.crime.date + ' года примерно в ' + props.crime.time + '...'}</div>
+                        <div className="crimeText">{'В отдел полиции обратился(лась) гр. ' + props.crime.fio + ' с заявлением о том, что ' + props.crime.date + ' года примерно в ' + props.crime.time + ' неизвестное лицо совершило ' + props.crime.sposob}</div>
                         :
                         <div className="crimeText">В данном окне будет формироваться краткая информация о происшествии (ориентировка). В
                             зависимости от показаний будет квалифицироваться статья УК РФ.

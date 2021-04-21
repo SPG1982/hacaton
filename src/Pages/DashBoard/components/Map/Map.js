@@ -22,7 +22,7 @@ import io from "socket.io-client";
 
 
 const Map = (props) => {
-console.log(props)
+
     const [markers, setMarkers] = useState([]);
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
@@ -94,6 +94,10 @@ console.log(props)
         props.crime.itogText && socket.current.emit('CRIME', {'text': props.warning})
         //const map = mapRef.current;
         //mapJS = L.map('mapJS').setView([51.620972, 39.062980], 12);
+
+
+
+
     }, [props.crime.itogText])
 
     function ChangeView({center}) {
@@ -118,7 +122,8 @@ console.log(props)
                     L.latLng(51.620972, 39.062980),
                     L.latLng(51.6, 39.06)
                 ],
-                show: false
+                show: true,
+                language: 'ru',
             }).addTo(map);
             setSearch(1)
         }
@@ -168,8 +173,8 @@ console.log(props)
                 <Click/>
                 <Circle center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} pathOptions={{fillColor: 'red'}}
                         radius={200}/>
-                {/*<Route/>*/}
-                {/*<Search/>*/}
+                <Route/>
+                <Search/>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

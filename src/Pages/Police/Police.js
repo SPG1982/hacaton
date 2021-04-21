@@ -8,7 +8,6 @@ import './css.css'
 import 'leaflet/dist/leaflet.css'
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
 import {Circle, MapContainer, Marker, TileLayer, Tooltip, useMap, useMapEvent} from "react-leaflet";
-import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-geosearch/dist/geosearch.css';
 import "leaflet-routing-machine";
@@ -28,9 +27,12 @@ import {ModalInfo} from "../../components/Modals/ModalInfo";
 import io from "socket.io-client";
 import ZoomIframe from "../../components/ZoomIframe/ZoomIframe";
 import {ModalCall} from "../../components/Modals/ModalCall";
+import pps from '../../assets/images/pps.png'
+import op from '../../assets/images/otdel.png'
 
 
 const Police = (props) => {
+    console.log(pps)
     const [markers, setMarkers] = useState([]);
     const [add, setAdd] = useState(null);
     const [search, setSearch] = useState(null);
@@ -48,7 +50,7 @@ const Police = (props) => {
     function success(position) {
         setCrd([position.coords.latitude, position.coords.longitude])
         socket.current.emit('GPS', {'user': props.user, 'x': position.coords.latitude, 'y': position.coords.longitude})
-        console.log('GPS')
+        //console.log('GPS')
     }
 
     function error(err) {
@@ -77,7 +79,7 @@ const Police = (props) => {
         // }, 1000);
 
         socket.current.on('BROADCAST:CRIME', (data) => {
-            console.log('Сообщение Сокета: ' + data.text)
+            console.log('Сообщение Сокета о warning: ' + data.text)
             if (!props.warning) {
                 props.setWarning(data.text)
                 props.setModalInfo(true)
@@ -129,7 +131,8 @@ const Police = (props) => {
     function Click() {
         const map = useMapEvent('click', (e) => {
             //map.setCenter([50.5, 30.5])
-            console.log(e.latlng.lat)
+            console.log('Lat' + e.latlng.lat)
+            console.log('Lng' + e.latlng.lng)
         })
         return null
     }
@@ -137,13 +140,14 @@ const Police = (props) => {
     let Route = () => {
         let map = useMap();
         if (!search) {
-            L.Routing.control({
-                waypoints: [
-                    L.latLng(51.620972, 39.062980),
-                    L.latLng(51.6, 39.06)
-                ],
-                show: false
-            }).addTo(map);
+            // L.Routing.control({
+            //     waypoints: [
+            //         L.latLng(51.620972, 39.062980),
+            //         L.latLng(51.6, 39.06)
+            //     ],
+            //     show: true,
+            //     language: 'ru',
+            // }).addTo(map);
             setSearch(1)
         }
         return null
@@ -151,20 +155,79 @@ const Police = (props) => {
 
     let Search = () => {
         let map = useMap();
+        console.log(map)
         if (!search) {
-            const provider = new OpenStreetMapProvider();
-            provider.search({query: 'Воронеж, Патриотов 53'}).then(function (result) {
-                console.log(result)
-            });
-
-            const searchControl = new GeoSearchControl({
-                provider: provider,
-                style: 'bar'
-            });
-            map.addControl(searchControl);
+            // const provider = new OpenStreetMapProvider();
+            // provider.search({query: 'Воронеж, Патриотов 53'}).then(function (result) {
+            //     console.log(result)
+            // });
+            //
+            // const searchControl = new GeoSearchControl({
+            //     provider: provider,
+            //     // style: 'bar',
+            //     style: 'button',
+            //     searchLabel: 'Введите адрес',
+            //     notFoundMessage: 'Не найдено',
+            //     // position: 'topcenter',
+            //     showMarker: true,
+            //     selected: 0,
+            // });
+            // map.addControl(searchControl);
             setSearch(1)
         }
         return null
+    }
+
+    let ready = (map) => {
+        let mapL = map
+        const provider = new OpenStreetMapProvider();
+        provider.search({query: 'Воронеж, Патриотов 53'}).then(function (result) {
+            // console.log(result)
+        });
+
+        const searchControl = new GeoSearchControl({
+            provider: provider,
+            // style: 'bar',
+            style: 'button',
+            searchLabel: 'Введите адрес',
+            notFoundMessage: 'Не найдено',
+            // position: 'topcenter',
+            showMarker: true,
+            selected: 0,
+        });
+        map.addControl(searchControl);
+
+        // L.Routing.control({
+        //     waypoints: [
+        //         L.latLng(51.620972, 39.062980),
+        //         L.latLng(51.6, 39.06)
+        //     ],
+        //     show: true,
+        //     language: 'ru',
+        // }).addTo(map);
+
+        let iconPps = L.icon({
+            iconUrl: pps,
+            shadowUrl: null,
+
+            iconSize:     [50, 50], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [25, 0] // point from which the popup should open relative to the iconAnchor
+        });
+
+        let iconOp = L.icon({
+            iconUrl: op,
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+        });
+
+
+        L.marker([51.65422426460938, 39.14499521255494], {icon: iconOp}).addTo(map);
+        L.marker([51.64171, 39.08685], {icon: iconPps}).addTo(map);
+
+
     }
 
 // ----------------------
@@ -186,12 +249,14 @@ const Police = (props) => {
             <MapContainer
                 id="mapJS"
                 className='mapGpsPolice'
-                center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} zoom={15} zoomControl={true}
+                center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} zoom={10} zoomControl={true}
                 scrollWheelZoom={true}
+                // whenReady={(map)=> {ready(map)}}
+                whenCreated={(map)=> {ready(map)}}
             >
                 <ChangeView center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}/>
                 <Click/>
-                <Circle center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} pathOptions={{fillColor: 'red'}}
+                <Circle center={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]} pathOptions={{fillColor: 'blue'}}
                         radius={200}/>
                 {/*<Route/>*/}
                 {/*<Search/>*/}
