@@ -30,14 +30,17 @@ const Form = (props) => {
                     textAlign: 'justify'
                 }}>
 
-                    {props.crime.fio
+                    {props.crime.sposob
                         ?
-                        <div className="crimeText">{'В отдел полиции обратился(лась) гр. ' + props.crime.fio + ' с заявлением о том, что ' + props.crime.date + ' года примерно в ' + props.crime.time + ' неизвестное лицо совершило ' + props.crime.sposob}</div>
+                        <div className="crimeText" style={{color: 'blue'}}>{'В отдел полиции обратился(лась) гр. ' + props.crime.fio + ' с заявлением о том, что ' + props.crime.date + ' года примерно в ' + props.crime.time + ' неизвестное лицо совершило ' + props.crime.sposobText + ' и похитило ' + props.crime.predmet + '. Информация о способе: '+ props.crime.sposob + '. Общая сумма ущерба составила: ' + props.crime.summ + '. Медицинская помощь заявителю: ' + ((!props.crime.life || props.crime.life == 'не требуется' || props.crime.life == 'нет') ? ' не требуется' : ' требуется') + '.'}</div>
                         :
-                        <div className="crimeText">В данном окне будет формироваться краткая информация о происшествии (ориентировка). В
+                        <div className="crimeText">
+                            В данном окне будет формироваться краткая информация о происшествии (ориентировка). В
                             зависимости от показаний будет квалифицироваться статья УК РФ.
                         </div>
                     }
+
+                    {props.crime.fio && !props.crime.sposob && <div className="crimeText" style={{color: 'red', fontWeight: 'bold'}}>Идет анализ ответов. Полученной информации пока недостаточно для квалификации</div>}
 
                 </div>
             </div>

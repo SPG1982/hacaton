@@ -28,6 +28,7 @@ let initialState = {
         date: '',
         time: '',
         address: '',
+        sposobText: '',
         sposob: '',
         predmet: '',
         life: '',

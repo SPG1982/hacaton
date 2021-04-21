@@ -17,7 +17,7 @@ import {
     addQuestion,
     setAudio,
     setCrime,
-    setModalDialog, setPredSostav,
+    setModalDialog, setModalInfo, setPredSostav,
     setUser,
     setWarning
 } from "../../redux/reducers/app-reducer";
@@ -92,13 +92,14 @@ let mapStateToProps = (state) => {
         warning: state.app.warning,
         crime: state.app.crime,
         modalDialog: state.app.modalDialog,
+        modalInfo: state.app.modalInfo,
         predSostav: state.app.predSostav
 
     }
 }
 
 let mapDispatchToPropsLite =
-    {addAnswer, addQuestion, setAudio, setUser, setWarning, setCrime, setModalDialog, setPredSostav}
+    {addAnswer, addQuestion, setAudio, setUser, setWarning, setCrime, setModalDialog, setPredSostav, setModalInfo}
 
 export default compose(
     connect(mapStateToProps, mapDispatchToPropsLite),

@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import dej from "../../../../assets/images/dej.jpg";
 import {useSpeechRecognition, useSpeechSynthesis} from "react-speech-kit";
 import {ModalDialog} from "../../../../components/Modals/ModalDialog";
+import {ModalInfo} from "../../../../components/Modals/ModalInfo";
 
 const Photo = (props) => {
     // console.log(props)
@@ -17,6 +18,7 @@ const Photo = (props) => {
     const [answer, setAnswer] = useState('');
     const [blocked, setBlocked] = useState(false);
     const [questionBlock, setQuestionBlock] = useState('база');
+    const [warningText, setWarningText] = useState('');
 
     const {speak, speaking, voices} = useSpeechSynthesis({
         onEnd: () => {
@@ -37,14 +39,14 @@ const Photo = (props) => {
 
     useEffect(() => {
 
-        let counter = 0;
+        //props.setCrime({key: 'itogText', text: true})
 
+        let counter = 0;
         for (let key in questions[questionBlock]) {
             counter++;
         }
-
         const intervalId = setInterval(() => {
-            //console.log(question)
+            // console.log(question)
             // props.setCrime({key: 'itogText', text : true})
             if (question === 5 && !answer && questionBlock == 'база') {
                 props.setModalDialog(true)
@@ -76,20 +78,29 @@ const Photo = (props) => {
                 if ((questionBlock !== 'база' && counter > question)) {
                     setQuestion(question + 1)
                     props.addAnswer(answer)
-                    props.setCrime({key: questions[questionBlock][question].key, text : questions[questionBlock][question].crime})
+                    if (questions[questionBlock][question].key == 'sposob') {
+                        props.setCrime({key: 'sposobText', text: questions[questionBlock][question].crime})
+                    }
                     props.audio === 'sound' ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
                     setAnswer('')
                 }
                 if ((questionBlock !== 'база' && counter == question)) {
                     props.addAnswer(answer)
                     stop()
-                    props.setCrime({key: 'itogText', text : true})
-                    props.setCrime({key: questions[questionBlock][question].key, text : questions[questionBlock][question].crime})
+
+
+                    if (questions[questionBlock][question].key == 'sposob') {
+                        props.setCrime({key: 'sposobText', text: questions[questionBlock][question].crime})
+                    }
+                    props.setCrime({key: questions[questionBlock][question].key, text: answer})
+                    props.setCrime({key: 'itogText', text: true})
+                    props.setModalInfo(true)
+                    setWarningText('Ваше заявление принято. Вы можете ожидать на месте прибытия ближайшего наряда или самостоятельно обратиться в ближайший отдел полиции. Мы составили маршрут и указали его на карте.' + ((!props.crime.life || props.crime.life == 'не требуется' || props.crime.life == 'нет') ? ' Так как Вам не требуется медицинская помощь, скорую мы не вызываем.' : ' В связи с причиненными Вам телесными повреждениями мы вызвали Вам скорую помощь. Ожидайте.')  )
                     console.log('КОНЕЦ')
                     setAnswer('')
                 }
 
-                props.setCrime({key: questions[questionBlock][question].key, text : answer})
+                props.setCrime({key: questions[questionBlock][question].key, text: answer})
 
             } else {
                 setLastAnswer(answer)
@@ -122,18 +133,58 @@ const Photo = (props) => {
                 1: {key: 'fio', question: 'Назовите фамилию, имя, отчество'},
                 2: {key: 'date', question: 'Укажите дату события'},
                 3: {key: 'time', question: 'Уточните время'},
-                4: {key: 'address', question: 'Укажите адрес, где все случилось'},
-                5: {key: 'text', question: 'Что произошло?'},
+                4: {key: 'address', question: 'Укажите адрес, где произошло преступление'},
+                5: {key: 'text', question: 'Что произошло'},
             },
             отказ: {
                 1: {key: 'text', question: 'По вашим показаниям преступления не установлено'},
                 2: {key: 'text', question: 'Вы можете обжаловать наши действия...'},
             },
             кража: {
-                1: {key: 'sposob', crime: 'тайное хищение чужого имущества (кража)', question: 'Откуда было похищено имущество и каким способом'},
+                1: {
+                    key: 'sposob',
+                    crime: 'тайное хищение чужого имущества (кража)',
+                    question: 'Откуда было похищено имущество и каким способом'
+                },
                 2: {key: 'predmet', question: 'Что именно было похищено'},
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
-            }, грабеж: {}, разбой: {}, мошенничество: {}, вымогательство: {},
+            }, грабеж: {
+                1: {
+                    key: 'sposob',
+                    crime: 'открытое хищение чужого имущества (грабеж)',
+                    question: 'Как было похищено имущество и запомнили ли вы лицо'
+                },
+                2: {key: 'predmet', question: 'Что именно было похищено'},
+                3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
+                4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
+            }, разбой: {
+                1: {
+                    key: 'sposob',
+                    crime: 'нападение в целях хищения чужого имущества (разбой)',
+                    question: 'Откуда было похищено имущество и каким способом запомнили ли вы лицо'
+                },
+                2: {key: 'predmet', question: 'Что именно было похищено'},
+                3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
+                4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
+            }, мошенничество: {
+                1: {
+                    key: 'sposob',
+                    crime: 'хищение чужого имущества путем обмана или злоупотребления доверием (мошенничество)',
+                    question: 'Каким образом был совершен обман'
+                },
+                2: {key: 'predmet', question: 'Что именно было похищено'},
+                3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
+                4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
+            }, вымогательство: {
+                1: {
+                    key: 'sposob',
+                    crime: 'хищение чужого имущества путем угрозы (вымогательство)',
+                    question: 'Какие именно угрозы поступили в ваш адрес'
+                },
+                2: {key: 'predmet', question: 'Что именно было похищено'},
+                3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
+                4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
+            },
         });
     }, [])
 
@@ -151,6 +202,7 @@ const Photo = (props) => {
         <>
             <h2 style={{textAlign: 'center'}}>Видеопоток дежурной части</h2>
             <ModalDialog {...props} lastAnswer={lastAnswer}/>
+            <ModalInfo {...props} warningText={warningText} />
             <div
                 style={{
                     margin: 'auto',
@@ -165,7 +217,7 @@ const Photo = (props) => {
             >
                 <audio id='sound' ref={audioRef}></audio>
 
-                <div style={{width: "75%", margin: "auto", fontSize: '18px', textAlign: 'center'}}>
+                <div style={{width: "80%", margin: "auto", fontSize: '18px', textAlign: 'center'}}>
                     <button style={{
                         margin: '10px auto',
                         backgroundColor: 'blue',
@@ -196,7 +248,8 @@ const Photo = (props) => {
                         <div style={{
                             backgroundColor: 'red',
                             color: 'white'
-                        }}>Вопрос: {questions[questionBlock][question].question}</div>
+                        }}>Вопрос: {questions[questionBlock][question].question} ?
+                        </div>
                         {(question !== 5 || questionBlock !== 'база') &&
                         <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
                     </div>}
