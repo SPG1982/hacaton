@@ -33,6 +33,7 @@ import med from '../../assets/images/med.png'
 import vi from '../../assets/images/vi.png'
 import gai from '../../assets/images/gai.png'
 import uaz from '../../assets/images/uaz.png'
+import igps from "../../assets/images/gps.png";
 
 
 const Police = (props) => {
@@ -180,6 +181,55 @@ const Police = (props) => {
         return null
     }
 
+
+    let iconGps = L.icon({
+        iconUrl: igps,
+        iconSize:     [50, 50], // size of the icon
+        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+    });
+
+    let iconPps = L.icon({
+        iconUrl: pps,
+        shadowUrl: null,
+
+        iconSize:     [50, 50], // size of the icon
+        shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [25, 25] // point from which the popup should open relative to the iconAnchor
+    });
+
+    let iconOp = L.icon({
+        iconUrl: op,
+        iconSize:     [100, 31], // size of the icon
+        iconAnchor:   [50, 15], // point of the icon which will correspond to marker's location
+    });
+
+    let iconVi = L.icon({
+        iconUrl: vi,
+        iconSize:     [50, 78], // size of the icon
+        iconAnchor:   [25, 39], // point of the icon which will correspond to marker's location
+    });
+
+    let iconMed = L.icon({
+        iconUrl: med,
+        iconSize:     [50, 50], // size of the icon
+        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+    });
+
+    let iconGai = L.icon({
+        iconUrl: gai,
+        iconSize:     [50, 76], // size of the icon
+        iconAnchor:   [25, 38], // point of the icon which will correspond to marker's location
+    });
+
+
+    let iconUaz = L.icon({
+        iconUrl: uaz,
+        iconSize:     [50, 38], // size of the icon
+        iconAnchor:   [25, 19], // point of the icon which will correspond to marker's location
+    });
+
     let ready = (map) => {
         setMap(map)
         console.log(mapUse)
@@ -209,51 +259,12 @@ const Police = (props) => {
         //     language: 'ru',
         // }).addTo(map);
 
-        let iconPps = L.icon({
-            iconUrl: pps,
-            shadowUrl: null,
 
-            iconSize:     [50, 50], // size of the icon
-            shadowSize:   [50, 64], // size of the shadow
-            iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor:  [25, 0] // point from which the popup should open relative to the iconAnchor
-        });
         L.marker([51.64171, 39.08685], {icon: iconPps}).addTo(map);
-
-        let iconOp = L.icon({
-            iconUrl: op,
-            iconSize:     [100, 31], // size of the icon
-            iconAnchor:   [50, 15], // point of the icon which will correspond to marker's location
-        });
         L.marker([51.65422426460938, 39.14499521255494], {icon: iconOp}).addTo(map);
-
-        let iconMed = L.icon({
-            iconUrl: med,
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-        });
         L.marker([51.644135621894044, 39.13347244262696], {icon: iconMed}).addTo(map);
-
-        let iconVi = L.icon({
-            iconUrl: vi,
-            iconSize:     [50, 78], // size of the icon
-            iconAnchor:   [25, 39], // point of the icon which will correspond to marker's location
-        });
         L.marker([51.63171, 39.07685], {icon: iconVi}).addTo(map);
-
-        let iconGai = L.icon({
-            iconUrl: gai,
-            iconSize:     [50, 76], // size of the icon
-            iconAnchor:   [25, 38], // point of the icon which will correspond to marker's location
-        });
         L.marker([51.67006000219596, 39.12797927856446], {icon: iconGai}).addTo(map);
-
-        let iconUaz = L.icon({
-            iconUrl: uaz,
-            iconSize:     [50, 38], // size of the icon
-            iconAnchor:   [25, 19], // point of the icon which will correspond to marker's location
-        });
         L.marker([51.5484166846177, 39.08660888671876], {icon: iconUaz}).addTo(map);
         L.marker([51.65067302553889, 39.064464569091804], {icon: iconUaz}).addTo(map);
         L.marker([51.683465639557696, 39.1190528869629], {icon: iconUaz}).addTo(map);
@@ -298,7 +309,7 @@ const Police = (props) => {
 
                 {markers.map(marker => {
                     return (
-                        <Marker key={marker.user} position={[marker.x, marker.y]}>
+                        <Marker key={marker.user} icon={iconPps} position={[marker.x, marker.y]}>
                             {/*{console.log('x и y: ', marker.x, marker.y)}*/}
                             <Tooltip permanent direction='top'>
                                 {marker.user}
@@ -308,7 +319,7 @@ const Police = (props) => {
                 })
                 }
 
-                <Marker position={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}>
+                <Marker icon={iconGps} position={crd ? [crd[0], crd[1]] : [51.63171, 39.07685]}>
                     {/*<Popup>*/}
                     {/*    Нажатие*/}
                     {/*</Popup>*/}

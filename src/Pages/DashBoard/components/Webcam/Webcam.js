@@ -5,23 +5,33 @@ import {withRouter} from "react-router-dom";
 import styles from './styles.module.css'
 import * as faceApi from "face-api.js";
 import useInterval from "@use-it/interval";
+import ml5 from "ml5";
+
+let classifier = 1
 
 const Webcam = (props) => {
     const [Init, setInit] = useState(false);
     const [find, setFind] = useState(false);
     const [faceMatcher, setfaceMatcher] = useState({});
+    const [isMounted, setMounted] = useState(true)
+    const [start, setStart] = useState(false);
+    const [result, setResult] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
     const videoRef = useRef()
     const canvasRef = useRef()
     const contRef = useRef()
     // let interval
 
-    const [isMounted, setMounted] = useState(true)
+
+    const MODEL_URL = process.env.PUBLIC_URL + '/modelstf';
 
     let widthVideo = 400
     let heightVideo = 300
 
     useEffect(() => {
+        classifier = ml5.imageClassifier(MODEL_URL + "/model.json", ()=> {setLoaded(true)})
+
         const loadModels = async () => {
             const MODEL_URL = process.env.PUBLIC_URL + '/facesApi/models';
             Promise.all([
@@ -34,21 +44,42 @@ const Webcam = (props) => {
             ]).then(startVideo).then(() => setInit(false));
         }
         loadModels();
+
         return () => {
             setMounted(false)
             clearInterval(interval)
             console.log('Размонтирование')
         }
+
+        startVideo()
+
     }, [])
 
+
+    useInterval(() => {
+        // console.log('Интервал TF')
+        // console.log(classifier)
+        if (classifier && loaded && start) {
+            classifier.classify(videoRef.current, (error, results) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                setResult(results);
+                console.log(results)
+            });
+        }
+    }, 1000);
+
     const startVideo = () => {
-        //console.log('Старт')
+        console.log('Старт')
         navigator.mediaDevices.getUserMedia(
             {video: {}},
         ).then(
             (stream) => {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
+                setStart(true);
             }
         )
     }
@@ -64,13 +95,12 @@ const Webcam = (props) => {
         widthVideo = document.querySelector('#containerVideo').offsetWidth
         heightVideo = document.querySelector('#containerVideo').offsetHeight - 6
         faceApi.matchDimensions(canvasRef.current, {width: widthVideo, height: heightVideo});
-        // interval(faceMatcher)
+        interval(faceMatcher)
     }
 
 
     useInterval(() => {
-        //console.log('Интервал')
-        if (Init && isMounted) {
+         if (Init && isMounted) {
             interval(faceMatcher)
         }
 
@@ -159,6 +189,17 @@ return (
                     color: 'black',
                     fontSize: '18px'
                 }}>Личность установлена: {find}</div>}
+                {result.length > 0 && <div style={{
+                    padding: '3px',
+                    // marginTop: '5px',
+                    // borderRadius: '10px',
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    backgroundColor: 'greenYellow',
+                    color: 'black',
+                    fontSize: '18px'
+                }}>На фото обнаружено: {result[0].label}</div>}
 
                 <canvas ref={canvasRef} width="100%" height="100%" className={styles.absolute}/>
                 <video ref={videoRef} autoPlay muted width="100%" height="100%"

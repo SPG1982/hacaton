@@ -44,7 +44,7 @@ const DashBoard = (props) => {
                     <Photo {...props}/>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8}>
-                    {/*<Webcam/>*/}
+                    <Webcam {...props}/>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8}>
                     <Map {...props}/>

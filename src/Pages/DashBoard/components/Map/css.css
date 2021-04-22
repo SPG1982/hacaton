@@ -5,9 +5,9 @@
     height: 300px;
 }
 
-.leaflet-tooltip {
-    margin-left: -15px;
-}
+/*.leaflet-tooltip {*/
+/*    margin-left: -15px;*/
+/*}*/
 
 .leaflet-routing-collapse-btn {
     left: 2px !important;
