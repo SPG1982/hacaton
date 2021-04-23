@@ -16,6 +16,7 @@ const Webcam = (props) => {
     const [isMounted, setMounted] = useState(true)
     const [start, setStart] = useState(false);
     const [result, setResult] = useState([]);
+    const [resultTranslate, setResultTranslate] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
     const videoRef = useRef()
@@ -30,10 +31,13 @@ const Webcam = (props) => {
     let heightVideo = 300
 
     useEffect(() => {
-        classifier = ml5.imageClassifier(MODEL_URL + "/model.json", ()=> {setLoaded(true)})
+        //classifier = ml5.imageClassifier(MODEL_URL + "/model.json", ()=> {setLoaded(true)})
+        //classifier = ml5.imageClassifier('MobileNet', ()=> {setLoaded(true)})
+
 
         const loadModels = async () => {
             const MODEL_URL = process.env.PUBLIC_URL + '/facesApi/models';
+            //startVideo()
             Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                 faceApi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -51,7 +55,7 @@ const Webcam = (props) => {
             console.log('Размонтирование')
         }
 
-        startVideo()
+        // startVideo()
 
     }, [])
 
@@ -66,10 +70,12 @@ const Webcam = (props) => {
                     return;
                 }
                 setResult(results);
+                setResultTranslate(results[0].label)
+                // translate(result[0].label)
                 console.log(results)
             });
         }
-    }, 1000);
+    }, 3000);
 
     const startVideo = () => {
         console.log('Старт')
@@ -101,10 +107,10 @@ const Webcam = (props) => {
 
     useInterval(() => {
          if (Init && isMounted) {
-            interval(faceMatcher)
+            interval()
         }
 
-    }, 100)
+    }, 500)
 
 
     async function interval() {
@@ -138,6 +144,32 @@ const Webcam = (props) => {
             })
         }
     }
+
+
+    // function translate(text) {
+    //     fetch("https://microsoft-translator-text.p.rapidapi.com/translate?to=%3CREQUIRED%3E&api-version=3.0&profanityAction=NoAction&textType=plain", {
+    //         "method": "POST",
+    //         "headers": {
+    //             "content-type": "application/json",
+    //             "x-rapidapi-key": "9a92908cebmsh1422a3f512b2141p19bb8bjsnb1518ff51a72",
+    //             "x-rapidapi-host": "microsoft-translator-text.p.rapidapi.com"
+    //         },
+    //         "body": [
+    //             {
+    //                 "Text": text
+    //             }
+    //         ]
+    //     })
+    //         .then(response => {
+    //             console.log(response);
+    //             setResultTranslate(response)
+    //         })
+    //         .catch(err => {
+    //             console.error(err);
+    //         });
+    // }
+
+
 
 
 function loadLabeledImages() {
@@ -199,7 +231,7 @@ return (
                     backgroundColor: 'greenYellow',
                     color: 'black',
                     fontSize: '18px'
-                }}>На фото обнаружено: {result[0].label}</div>}
+                }}>На видео обнаружено: {resultTranslate}</div>}
 
                 <canvas ref={canvasRef} width="100%" height="100%" className={styles.absolute}/>
                 <video ref={videoRef} autoPlay muted width="100%" height="100%"

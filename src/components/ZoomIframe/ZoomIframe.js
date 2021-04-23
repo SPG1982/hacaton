@@ -160,7 +160,8 @@ function ZoomIframe(props) {
         <Container>
             {/*<h3 style={{textAlign: 'center'}}>{props.user}</h3>*/}
             {/*{if (1 === 1) ? null : null}*/}
-            {(incomingCall && !callAccepted) && <ModalCall {...props} acceptCall={acceptCall} text={`Входящий звонок: ${users[caller]}`} />}
+            {(incomingCall && !callAccepted) &&
+            <ModalCall {...props} acceptCall={acceptCall} text={`Входящий звонок: ${users[caller]}`}/>}
             <Row>
                 {UserVideo}
                 {PartnerVideo}
@@ -173,7 +174,7 @@ function ZoomIframe(props) {
                     }
                     return (
                         <Col xs={24} sm={24} md={12} lg={6} xl={6} xxl={4} key={i}>
-                            <button style={{margin: '5px', backgroundColor: 'red', color: 'white'}} type="primary"
+                            <button style={{fontSize: '16px', margin: '5px', backgroundColor: 'red', color: 'white'}} type="primary"
                                     onClick={() => callPeer(user[0])}>Позвонить {user[1]}</button>
                         </Col>
                     );

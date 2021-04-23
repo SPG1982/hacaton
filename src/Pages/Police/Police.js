@@ -34,6 +34,48 @@ import vi from '../../assets/images/vi.png'
 import gai from '../../assets/images/gai.png'
 import uaz from '../../assets/images/uaz.png'
 import igps from "../../assets/images/gps.png";
+import styled from "styled-components";
+
+
+const Table = (props) => {
+
+    const Container = styled.div`
+      //height: 100vh;
+      width: 100%;
+      display: flex;
+      //flex-direction: column;
+      margin: 10px;
+    `;
+
+    return (
+        <Container>
+            <div style={{width: '100%'}}>
+                <table style={{border: '1px solid black', width: '100%', fontSize: '18px'}}>
+                    <tbody>
+                    <tr style={{backgroundColor: 'black', color: 'white', textAlign: 'center'}}>
+                        <th style={{border: '1px solid black'}}>Дата</th>
+                        <th style={{border: '1px solid black'}}>Время</th>
+                        <th style={{border: '1px solid black'}}>ФИО заявителя</th>
+                        <th style={{border: '1px solid black'}}>Краткое сообщение</th>
+                        <th style={{border: '1px solid black'}}>Квалификация</th>
+                        <th style={{border: '1px solid black'}}>Результаты</th>
+                        <th style={{border: '1px solid black'}}>Завершено</th>
+                    </tr>
+                    <tr>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </Container>
+    )
+}
 
 
 const Police = (props) => {
@@ -184,50 +226,50 @@ const Police = (props) => {
 
     let iconGps = L.icon({
         iconUrl: igps,
-        iconSize:     [50, 50], // size of the icon
-        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+        iconSize: [50, 50], // size of the icon
+        iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
     });
 
     let iconPps = L.icon({
         iconUrl: pps,
         shadowUrl: null,
 
-        iconSize:     [50, 50], // size of the icon
-        shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+        iconSize: [50, 50], // size of the icon
+        shadowSize: [50, 64], // size of the shadow
+        iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
         shadowAnchor: [4, 62],  // the same for the shadow
-        popupAnchor:  [25, 25] // point from which the popup should open relative to the iconAnchor
+        popupAnchor: [25, 25] // point from which the popup should open relative to the iconAnchor
     });
 
     let iconOp = L.icon({
         iconUrl: op,
-        iconSize:     [100, 31], // size of the icon
-        iconAnchor:   [50, 15], // point of the icon which will correspond to marker's location
+        iconSize: [100, 31], // size of the icon
+        iconAnchor: [50, 15], // point of the icon which will correspond to marker's location
     });
 
     let iconVi = L.icon({
         iconUrl: vi,
-        iconSize:     [50, 78], // size of the icon
-        iconAnchor:   [25, 39], // point of the icon which will correspond to marker's location
+        iconSize: [50, 78], // size of the icon
+        iconAnchor: [25, 39], // point of the icon which will correspond to marker's location
     });
 
     let iconMed = L.icon({
         iconUrl: med,
-        iconSize:     [50, 50], // size of the icon
-        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+        iconSize: [50, 50], // size of the icon
+        iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
     });
 
     let iconGai = L.icon({
         iconUrl: gai,
-        iconSize:     [50, 76], // size of the icon
-        iconAnchor:   [25, 38], // point of the icon which will correspond to marker's location
+        iconSize: [50, 76], // size of the icon
+        iconAnchor: [25, 38], // point of the icon which will correspond to marker's location
     });
 
 
     let iconUaz = L.icon({
         iconUrl: uaz,
-        iconSize:     [50, 38], // size of the icon
-        iconAnchor:   [25, 19], // point of the icon which will correspond to marker's location
+        iconSize: [50, 38], // size of the icon
+        iconAnchor: [25, 19], // point of the icon which will correspond to marker's location
     });
 
     let ready = (map) => {
@@ -272,6 +314,7 @@ const Police = (props) => {
 
     }
 
+
 // ----------------------
     return (
         <>
@@ -286,7 +329,7 @@ const Police = (props) => {
                            }} value={props.user}/>
                 </Col>
             </Row>
-            <ModalInfo {...props } warningText={props.warning} />
+            <ModalInfo {...props} warningText={props.warning}/>
 
             <MapContainer
                 id="mapJS"
@@ -294,11 +337,14 @@ const Police = (props) => {
                 center={crd ? [crd[0], crd[1]] : [51.64516089823489, 39.10326004028321]} zoom={12} zoomControl={true}
                 scrollWheelZoom={true}
                 // whenReady={(map)=> {ready(map)}}
-                whenCreated={(map)=> {ready(map)}}
+                whenCreated={(map) => {
+                    ready(map)
+                }}
             >
                 <ChangeView center={crd ? [crd[0], crd[1]] : [51.64516089823489, 39.10326004028321]}/>
                 <Click/>
-                <Circle center={crd ? [crd[0], crd[1]] : [51.64516089823489, 39.10326004028321]} pathOptions={{fillColor: 'blue'}}
+                <Circle center={crd ? [crd[0], crd[1]] : [51.64516089823489, 39.10326004028321]}
+                        pathOptions={{fillColor: 'blue'}}
                         radius={200}/>
                 {/*<Route/>*/}
                 {/*<Search/>*/}
@@ -333,8 +379,8 @@ const Police = (props) => {
     )
 }
 
-const Container = (props) => {
 
+const Container = (props) => {
     const {Content} = Layout;
     return (
         <>
@@ -344,7 +390,12 @@ const Container = (props) => {
                 <Layout>
                     <Content style={{margin: '0 16px'}}>
                         <Police {...props}/>
-                        <ZoomIframe {...props}/>
+                        <Row>
+                            <Table/>
+                        </Row>
+                        {/*<Row>*/}
+                            <ZoomIframe {...props}/>
+                        {/*</Row>*/}
                     </Content>
                 </Layout>
             </Layout>
