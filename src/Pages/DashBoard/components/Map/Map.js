@@ -279,7 +279,7 @@ const Map = (props) => {
 // ----------------------
     return (
         <>
-            <h2 style={{textAlign: 'center'}}>Местоположение нарядов</h2>
+            <h2 style={{textAlign: 'center'}}>Интерактивная карта</h2>
             <MapContainer
                 id="mapJS"
                 // key={JSON.stringify([crd[0], crd[1]])}

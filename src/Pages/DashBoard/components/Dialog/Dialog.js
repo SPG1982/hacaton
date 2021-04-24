@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {compose} from "redux";
 import {connect, useSelector} from "react-redux";
 import {withRouter} from "react-router-dom";
+import upk from '../../../../../src/assets/images/upk.jpg'
+import dej from "../../../../assets/images/dej.jpg";
 
 const Dialog = (props) => {
 
@@ -16,7 +18,17 @@ useEffect(()=> {
         <>
             <div style={{width: '95%', margin: 'auto'}}>
                 <h2 style={{textAlign: 'center'}}>Диалог с дежурным</h2>
-                <div id='dialog' ref={refDialog} style={{border: '1px solid black', maxHeight: '400px', overflowY: 'auto'}}>
+                <div id='dialog' ref={refDialog} style={{
+                    // backgroundColor: 'rgba(255,255,0,0.5)',
+                    // backgroundImage: `url(${upk})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    // height: '300px',
+                    width: '100%',
+                    border: '1px solid black',
+                    maxHeight: '400px', overflowY: 'auto'
+                }}>
 
 
                     {props.questions.map((q, i) => {

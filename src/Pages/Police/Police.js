@@ -61,14 +61,41 @@ const Table = (props) => {
                         <th style={{border: '1px solid black'}}>Результаты</th>
                         <th style={{border: '1px solid black'}}>Завершено</th>
                     </tr>
+                    <tr style={{backgroundColor: 'gray'}}>
+                        <td style={{border: '1px solid black'}}>24.04.2021</td>
+                        <td style={{border: '1px solid black'}}>10:29</td>
+                        <td style={{border: '1px solid black'}}>Петров А.В.</td>
+                        <td style={{border: '1px solid black'}}>Громко шумят соседи</td>
+                        <td style={{border: '1px solid black'}}>---</td>
+                        <td style={{border: '1px solid black'}}>Проведена беседа</td>
+                        <td style={{border: '1px solid black'}}>+</td>
+                    </tr>
+                    <tr style={{backgroundColor: 'coral'}}>
+                        <td style={{border: '1px solid black'}}>24.04.2021</td>
+                        <td style={{border: '1px solid black'}}>11:13</td>
+                        <td style={{border: '1px solid black'}}>Семенова Е.Ж.</td>
+                        <td style={{border: '1px solid black'}}>Обнаружила бесхозный предмет</td>
+                        <td style={{border: '1px solid black'}}>---</td>
+                        <td style={{border: '1px solid black'}}>Собственник найден</td>
+                        <td style={{border: '1px solid black'}}>+</td>
+                    </tr>
                     <tr>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
-                        <td style={{border: '1px solid black'}}>1</td>
+                        <td style={{border: '1px solid black'}}>24.04.2021</td>
+                        <td style={{border: '1px solid black'}}>12:44</td>
+                        <td style={{border: '1px solid black'}}>Моноконов П.В.</td>
+                        <td style={{border: '1px solid black'}}>Угон автомашины</td>
+                        <td style={{border: '1px solid black'}}>166</td>
+                        <td style={{border: '1px solid black'}}>СОГ - материал</td>
+                        <td style={{border: '1px solid black'}}>-</td>
+                    </tr>
+                    <tr>
+                        <td style={{border: '1px solid black'}}>24.04.2021</td>
+                        <td style={{border: '1px solid black'}}>13:12</td>
+                        <td style={{border: '1px solid black'}}>Епифанов К.О.</td>
+                        <td style={{border: '1px solid black'}}>Повреждение забора</td>
+                        <td style={{border: '1px solid black'}}>167</td>
+                        <td style={{border: '1px solid black'}}>СОГ - материал</td>
+                        <td style={{border: '1px solid black'}}>-</td>
                     </tr>
                     </tbody>
                 </table>
@@ -292,25 +319,31 @@ const Police = (props) => {
         });
         map.addControl(searchControl);
 
-        // L.Routing.control({
-        //     waypoints: [
-        //         L.latLng(51.620972, 39.062980),
-        //         L.latLng(51.6, 39.06)
-        //     ],
-        //     show: true,
-        //     language: 'ru',
-        // }).addTo(map);
+        L.Routing.control({
+            waypoints: [
+                L.latLng(51.620972, 39.062980),
+                L.latLng(51.6, 39.06)
+            ],
+            show: true,
+            language: 'ru',
+            draggableWaypoints: true,
+                lineOptions: {
+                    styles: [{color: 'blue', opacity: .5, weight: 5}]
+                },
+        }).addTo(map);
 
 
         L.marker([51.64171, 39.08685], {icon: iconPps}).addTo(map);
         L.marker([51.65422426460938, 39.14499521255494], {icon: iconOp}).addTo(map);
-        L.marker([51.644135621894044, 39.13347244262696], {icon: iconMed}).addTo(map);
-        L.marker([51.63171, 39.07685], {icon: iconVi}).addTo(map);
-        L.marker([51.67006000219596, 39.12797927856446], {icon: iconGai}).addTo(map);
+        // L.marker([51.644135621894044, 39.13347244262696], {icon: iconMed}).addTo(map);
+        // L.marker([51.63171, 39.07685], {icon: iconVi}).addTo(map);
+        // L.marker([51.67006000219596, 39.12797927856446], {icon: iconGai}).addTo(map);
         L.marker([51.5484166846177, 39.08660888671876], {icon: iconUaz}).addTo(map);
         L.marker([51.65067302553889, 39.064464569091804], {icon: iconUaz}).addTo(map);
+        L.marker([51.64460165946859, 39.13724899291992], {icon: iconUaz}).addTo(map);
         L.marker([51.683465639557696, 39.1190528869629], {icon: iconUaz}).addTo(map);
-
+        L.marker([51.65227061831277, 39.10068511962891], {icon: iconUaz}).addTo(map);
+        L.marker([51.63256303866287, 39.110641479492195], {icon: iconPps}).addTo(map);
 
     }
 

@@ -29,3 +29,12 @@
 .ant-modal-title {
     text-align: center;
 }
+
+.ant-modal-header {
+    background-color: red !important;
+    /*color: white !important;*/
+}
+
+.ant-modal-title {
+    color: white !important;
+}

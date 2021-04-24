@@ -29,7 +29,7 @@ const BrainIframe = (props) => {
 
     useEffect(() => {
         async function loadTexts() {
-            const crimes = ['отказ', 'кража', 'грабеж']
+            const crimes = ['orkaz', 'theft', 'grabej', 'ugon']
 
             const fetchText = (crime, i) => fetch(process.env.PUBLIC_URL + '/texts/' + crime + '/' + i + '.txt')
                 .then((response) => {
@@ -68,7 +68,7 @@ const BrainIframe = (props) => {
     useEffect(() => {
         if (props.answers.length == 5) {
             console.log('Квалификация...')
-            //console.log(props.answers[4])
+            console.log(props.answers[4])
             //console.log(classN);
             props.setPredSostav(classN.classify(props.answers[4]))
         }

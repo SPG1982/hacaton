@@ -17,7 +17,7 @@ const Photo = (props) => {
     const [lastAnswer, setLastAnswer] = useState('');
     const [answer, setAnswer] = useState('');
     const [blocked, setBlocked] = useState(false);
-    const [questionBlock, setQuestionBlock] = useState('база');
+    const [questionBlock, setQuestionBlock] = useState('base');
     const [warningText, setWarningText] = useState('');
 
     const {speak, speaking, voices} = useSpeechSynthesis({
@@ -40,51 +40,51 @@ const Photo = (props) => {
     useEffect(() => {
 
         //props.setCrime({key: 'itogText', text: true})
-
         let counter = 0;
         for (let key in questions[questionBlock]) {
             counter++;
         }
         const intervalId = setInterval(() => {
-            // console.log(question)
+             console.log(question)
             // props.setCrime({key: 'itogText', text : true})
-            if (question === 5 && !answer && questionBlock == 'база') {
+            if (question === 5 && !answer && questionBlock == 'base') {
                 props.setModalDialog(true)
             }
             if (answer && (lastAnswer === answer)) {
-                if (question !== 5 && questionBlock == 'база' && counter >= question) {
+                if (question !== 5 && questionBlock == 'base' && counter >= question) {
                     props.setModalDialog(false)
                     setTimeout(stop, 100)
                     console.log('Остановка распознавания')
                     props.addAnswer(answer)
-                    props.audio === 'sound' ? playSound(question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
+                    console.log(question)
+                    props.audio === 'sound' ? playSound('/' + questionBlock + '/' + (question+1) + '.mp3', questions[questionBlock][question + 1].question) : sayText(questions[questionBlock][question + 1].question)
                     setQuestion(question + 1)
                     setAnswer('')
                 }
-                if ((question == 5 && questionBlock == 'база') && (answer.indexOf('ответ закончен') !== -1 || answer.indexOf('ответ закончил') !== -1 || props.modalDialog == false)) {
-                    if (questionBlock == 'база' && props.answers.length <= 4) {
-                        console.log('q=5 + база' + props.predSostav)
+                if ((question == 5 && questionBlock == 'base') && (answer.indexOf('ответ закончен') !== -1 || answer.indexOf('ответ закончил') !== -1 || props.modalDialog == false)) {
+                    if (questionBlock == 'base' && props.answers.length <= 4) {
+                        console.log('q=5 + base' + props.predSostav)
                         props.addAnswer(answer)
                         props.setModalDialog(false)
                     } else if (props.predSostav !== '') {
-                        console.log('q=5 + не база ' + props.predSostav)
+                        console.log('q=5 + не base ' + props.predSostav)
                         setAnswer('')
                         setQuestion(1)
                         setQuestionBlock(props.predSostav)
-                        console.log(questions[props.predSostav][1].question)
-                        props.audio === 'sound' ? playSound((props.predSostav) + '/1.mp3') : sayText(questions[props.predSostav][1].question)
+                        //console.log(questions[props.predSostav][1].question)
+                        props.audio === 'sound' ? playSound((props.predSostav) + '/1.mp3', questions[props.predSostav][1].question) : sayText(questions[props.predSostav][1].question)
                     }
                 }
-                if ((questionBlock !== 'база' && counter > question)) {
+                if ((questionBlock !== 'base' && counter > question)) {
                     setQuestion(question + 1)
                     props.addAnswer(answer)
                     if (questions[questionBlock][question].key == 'sposob') {
                         props.setCrime({key: 'sposobText', text: questions[questionBlock][question].crime})
                     }
-                    props.audio === 'sound' ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question + 1].question)
+                    props.audio === 'sound' ? playSound((questionBlock) + '/' + (question+1) + '.mp3', questions[questionBlock][question + 1].question) : sayText(questions[questionBlock][question + 1].question)
                     setAnswer('')
                 }
-                if ((questionBlock !== 'база' && counter == question)) {
+                if ((questionBlock !== 'base' && counter == question)) {
                     props.addAnswer(answer)
                     stop()
 
@@ -117,10 +117,10 @@ const Photo = (props) => {
         onError,
     });
 
-    function playSound(url) {
+    function playSound(url, textMp3) {
         audioRef.current.src = SOUNDS_URL + '/' + url
         audioRef.current.play()
-        props.addQuestion(questions[questionBlock][question].question)
+        props.addQuestion(textMp3)
         audioRef.current.onended = () => {
             listen({interimResults: true, continuous: true, lang});
             console.log('Запуск распознавания')
@@ -129,22 +129,27 @@ const Photo = (props) => {
 
     useEffect(() => {
         setQuestions({
-            база: {
+            base: {
                 1: {key: 'fio', question: 'Назовите фамилию, имя, отчество'},
                 2: {key: 'date', question: 'Укажите дату события'},
                 3: {key: 'time', question: 'Уточните время'},
-                4: {key: 'address', question: 'Укажите адрес, где произошло преступление'},
+                4: {key: 'address', question: 'Укажите адрес, где произошло происшествие'},
                 5: {key: 'text', question: 'Что произошло'},
             },
-            отказ: {
+            orkaz: {
                 1: {key: 'text', question: 'По вашим показаниям преступления не установлено'},
                 2: {key: 'text', question: 'Вы можете обжаловать наши действия...'},
             },
-            угон: {
-                1: {key: 'text', question: 'По вашим показаниям преступления не установлено'},
-                2: {key: 'text', question: 'Вы можете обжаловать наши действия...'},
+            ugon: {
+                1: {
+                    key: 'sposob',
+                    crime: 'угон автомашины',
+                    question: 'Была ли установлена сигнализация на машине'
+                },
+                2: {key: 'predmet', question: 'Укажите марку автомашины и государственный регистрационный знак'},
+                3: {key: 'summ', question: 'Какая стоимость автомашины'},
             },
-            кража: {
+            theft: {
                 1: {
                     key: 'sposob',
                     crime: 'тайное хищение чужого имущества (кража)',
@@ -153,7 +158,7 @@ const Photo = (props) => {
                 2: {key: 'predmet', question: 'Что именно было похищено'},
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
             },
-            грабеж: {
+            grabej: {
                 1: {
                     key: 'sposob',
                     crime: 'открытое хищение чужого имущества (грабеж)',
@@ -163,7 +168,7 @@ const Photo = (props) => {
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
                 4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
             },
-            разбой: {
+            razboi: {
                 1: {
                     key: 'sposob',
                     crime: 'нападение в целях хищения чужого имущества (разбой)',
@@ -173,7 +178,7 @@ const Photo = (props) => {
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
                 4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
             },
-            мошенничество: {
+            mochen: {
                 1: {
                     key: 'sposob',
                     crime: 'хищение чужого имущества путем обмана или злоупотребления доверием (мошенничество)',
@@ -182,7 +187,7 @@ const Photo = (props) => {
                 2: {key: 'predmet', question: 'Что именно было похищено'},
                 3: {key: 'summ', question: 'Какая сумма причиненного ущерба'},
                 4: {key: 'life', question: 'Были ли Вам причинены телесные повреждения и требуется медицинская помощь'},
-            }, вымогательство: {
+            }, vimogat: {
                 1: {
                     key: 'sposob',
                     crime: 'хищение чужого имущества путем угрозы (вымогательство)',
@@ -233,7 +238,7 @@ const Photo = (props) => {
                         fontSize: '1em'
                     }} type="primary" disabled={blocked}
                             size="large" onClick={() => {
-                        (props.audio === 'sound') ? playSound((questionBlock) + '/' + question + '.mp3') : sayText(questions[questionBlock][question].question)
+                        (props.audio === 'sound') ? playSound((questionBlock) + '/' + question + '.mp3', questions[questionBlock][question].question) : sayText(questions[questionBlock][question].question)
                     }}>
                         {listening ? 'Идет распознавание речи' : 'Обратиться к дежурному'}
                     </button>
@@ -257,7 +262,7 @@ const Photo = (props) => {
                             color: 'white'
                         }}>Вопрос: {questions[questionBlock][question].question} ?
                         </div>
-                        {(question !== 5 || questionBlock !== 'база') &&
+                        {(question !== 5 || questionBlock !== 'base') &&
                         <div style={{backgroundColor: 'blue', color: 'white'}}>Ответ: {answer}</div>}
                     </div>}
                 </div>

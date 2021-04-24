@@ -6,7 +6,7 @@ import {withRouter} from "react-router-dom";
 const Form = (props) => {
     useEffect(()=> {
         let text = document.querySelector('.crimeText')
-        console.log(text.innerHTML)
+        //console.log(text.innerHTML)
         props.setWarning(text.innerHTML)
     }, [props.crime])
 
@@ -20,7 +20,11 @@ const Form = (props) => {
                     padding: '3px',
                     fontSize: '24px'
                 }}>
-                    {props.predSostav}</span></h2>}
+                    {props.predSostav == 'otkaz' && 'Преступление не выявлено'}
+                    {props.predSostav == 'theft' && 'Кража'}
+                    {props.predSostav == 'grabej' && 'Грабеж'}
+                    {props.predSostav == 'ugon' && 'Угон'}
+                </span></h2>}
                 <div style={{
                     padding: '5px',
                     border: '1px solid black',

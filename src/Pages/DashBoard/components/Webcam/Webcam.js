@@ -110,7 +110,7 @@ const Webcam = (props) => {
             interval()
         }
 
-    }, 500)
+    }, 100)
 
 
     async function interval() {
@@ -139,7 +139,7 @@ const Webcam = (props) => {
                 function word(str) {
                     let ars = str.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '').replace(/\s+/gi, ', ');
                     //return ars;
-                    return str.replace(/[^a-zа-яё ]/gi, '').trim()
+                    return str.replace(/[^a-zа-яё_]/gi, '').trim()
                 }
             })
         }
@@ -173,11 +173,11 @@ const Webcam = (props) => {
 
 
 function loadLabeledImages() {
-    const labels = ['Смагин Павел']
+    const labels = ['Smagin', 'Shestakov', 'Pahomova', 'Sarkisov', 'Efimov', 'Popov']
     return Promise.all(
         labels.map(async label => {
             let descriptions = [];
-            for (let i = 1; i <= 2; i++) {
+            for (let i = 1; i <= 3; i++) {
                 const img = await faceApi.fetchImage(process.env.PUBLIC_URL + '/facesApi/labeledImages/' + label + '/' + i + '.jpg');
                 //const img = await faceapi.fetchImage(`labeled_images/${label}/${i}.jpg`);
                 const detections = await faceApi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
