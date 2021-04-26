@@ -324,7 +324,8 @@ const Police = (props) => {
                 L.latLng(51.620972, 39.062980),
                 L.latLng(51.6, 39.06)
             ],
-            show: true,
+            show: false,
+            serviceUrl: 'https://hacaton.qpuzzle.ru/route/v1',
             language: 'ru',
             draggableWaypoints: true,
                 lineOptions: {
@@ -426,9 +427,7 @@ const Container = (props) => {
                         <Row>
                             <Table/>
                         </Row>
-                        {/*<Row>*/}
-                            <ZoomIframe {...props}/>
-                        {/*</Row>*/}
+                        {/*    <ZoomIframe {...props}/>*/}
                     </Content>
                 </Layout>
             </Layout>

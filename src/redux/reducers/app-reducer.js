@@ -1,3 +1,5 @@
+import React from "react";
+
 const APP_INITIALIZED = 'app/APP_INITIALIZED'
 const QUESTIONS = 'app/QUESTIONS'
 const ANSWERS = 'app/ANSWERS'
@@ -20,7 +22,9 @@ let initialState = {
     modalInfo: false,
     modalCall: true,
     modalDialog: false,
-    warning: '',
+    // warning: '',
+    warning: 'Анализ оперативной обстановки: рекомендуется отправить на происшествие наряд №5 (73%) или наряд №(27%)',
+    //warning: 'В отдел полиции обратился(лась) гр. Попов Даниил Денисович с заявлением о том, что 24.07.2021 года примерно в 10:00 часов неизвестное лицо совершило угон принадлежащей ему автомашины Шкода р/з Х 291 ХУ с придомовой территории по адресу: Воронеж, Кольцовская 12. Стоимость автомашины 550 000рублей',
     predSostav: '',
     predSostavAnalyze: false,
     crime: {

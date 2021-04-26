@@ -9,12 +9,13 @@ export const ModalInfo = (props) => {
     return (
         <>
             <Modal
-                title="СРОЧНАЯ ИНФОРОМАЦИЯ !!!"
+                //title="СРОЧНАЯ ИНФОРОМАЦИЯ !!!"
+                title="Рекомендации по выбору наряда"
                 // maskTransitionName=""
                 transitionName=""
                 bodyStyle={{padding: '20px'}}
                 visible={props.modalInfo}
-                width="50%"
+                width="80%"
                 maskClosable={false}
                 //onOk={modalClose}
                 onCancel={modalClose}
