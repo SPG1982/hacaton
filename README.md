@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+Клиент-серверная система предназначена для автоматического принятия сообщений от граждан через сайт в сети Интернет посредством ответа на вопросы голосом или введения в соответствующие поля формы, информирование о принятом сообщении дежурного и ближайших нарядов, предварительная квалификация происшествия и помощь дежурному при решении вопроса о расстановке сил и средств ОВД (план «Квадрат», «Перехват» и т.д.).
+Систему планируется использовать в дежурных частях районных отделов полиции, на уровне субъектов и системы МВД в целом. Собираемые данные в реальном времени позволят проводить различные виды анализа состояния преступности и эффективно реагировать на оперативную обстановку. 
+Выбор клиент-серверной архитектуры обусловлен необходимостью выполнять ресурсоемкие задачи на стороне клиента. В частности, для синтеза и распознавания речи нами использованы интерфейсы браузеров Web Speech API, которые позволяют проводить распознавание и синтез речи исключительно на стороне клиента (компьютера, планшета, мобильного телефона), что положительно влияет на мощность сервера и каналы связи. 
+Рекомендуемая комплектация клиента: 
+- персональный компьютер: операционная система: Windows 7/8/10, дистрибутивы, основанные на Linux; тактовая частота процессора: не менее 2 GHz; оперативная память (ОЗУ): не менее 4 Gb; жёсткий диск: не менее 20 Gb свободного дискового пространства; экран: не менее 12”, разрешение не менее 1024×768; браузер Google Chrome, Microsoft Edge, Mozilla Firefox (только синтез речи), Opera (только синтез речи).
+- планшет или телефон: система Android 6.0 и выше, IOS версии 10.0 и выше, разрешение экрана не менее 800х600, оперативная память не менее 2Gb, 3Gb свободного места, браузер Google Chrome, Mozilla Firefox (только синтез речи), Opera (только синтез речи). В ходе разработки методов и решений данной задачи использовались такие среды разработки как:
+1.	PyCharm Community Edition 2021.1.
+2.	Visial Studio Code.
+3.	WebStorm 2021.2
+4.	PhpStorm 2021.1
+5.	Sublime Text3
+6.	Google Colab
+7.	phpMyAdmin 5.1.0
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Языками программирования, СУБД и скриптами выступили:
+1.	PHP 7.4
+2.	JavaScript стандарта ES2016
+3.	MySQL 5.5
+4.	Python 3.6
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Операционные системы, контейнеры, виртуальные машины и окружение:
+1.	Microsoft Windows 2010 (релиз 2004)
+2.	Ubuntu 20.04
+3.	Docker 20.10
+4.	VirtualBox 6.1
+5.	Anaconda 3.8
