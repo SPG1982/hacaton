@@ -301,10 +301,10 @@ const Police = (props) => {
 
     let ready = (map) => {
         setMap(map)
-        console.log(mapUse)
+        //console.log(mapUse)
         const provider = new OpenStreetMapProvider();
         provider.search({query: 'Воронеж, Патриотов 53'}).then(function (result) {
-            // console.log(result)
+            //console.log(result)
         });
 
         const searchControl = new GeoSearchControl({
@@ -319,20 +319,37 @@ const Police = (props) => {
         });
         map.addControl(searchControl);
 
-        L.Routing.control({
+        let routeControl = L.Routing.control({
             waypoints: [
                 L.latLng(51.620972, 39.062980),
                 L.latLng(51.6, 39.06)
             ],
             show: false,
-            serviceUrl: 'https://hacaton.qpuzzle.ru/route/v1',
+            collapsible: true,
+            serviceUrl: 'https://proxy.info-365.ru/osrm/route/v1',
             language: 'ru',
             draggableWaypoints: true,
-                lineOptions: {
-                    styles: [{color: 'blue', opacity: .5, weight: 5}]
-                },
-        }).addTo(map);
+            waypointMode: 'snap',
+            showAlternatives: true,
+            altLineOptions: {
+                styles: [{color: 'red', opacity: .5, weight: 6}]
+            },
+            lineOptions: {
+                styles: [{color: 'blue', opacity: .5, weight: 6}]
+            },
+        })
+            .on('routingstart', () => {
+                //console.log('Есть маршрут')
+            })
+            .on('routesfound', function (e) {
+                var routes = e.routes;
+                console.log(routes[0]);
 
+            })
+            .addTo(map);
+
+        //console.log(routeControl.getWaypoints())
+        //console.log(L.Routing.Plan.getWaypoints())
 
         L.marker([51.64171, 39.08685], {icon: iconPps}).addTo(map);
         L.marker([51.65422426460938, 39.14499521255494], {icon: iconOp}).addTo(map);

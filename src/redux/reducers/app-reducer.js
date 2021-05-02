@@ -1,4 +1,5 @@
 import React from "react";
+import {nodejsApi} from "../../api/nodejs-api";
 
 const APP_INITIALIZED = 'app/APP_INITIALIZED'
 const QUESTIONS = 'app/QUESTIONS'
@@ -11,6 +12,7 @@ const MODALDIALOG = 'app/MODALDIALOG'
 const WARNING = 'app/WARNING'
 const CRIME = 'app/CRIME'
 const PREDSOSTAV = 'app/PREDSOSTAV'
+const RECOGNIZED = 'app/RECOGNIZED'
 
 
 let initialState = {
@@ -22,10 +24,11 @@ let initialState = {
     modalInfo: false,
     modalCall: true,
     modalDialog: false,
-    // warning: '',
-    warning: 'Анализ оперативной обстановки: рекомендуется отправить на происшествие наряд №5 (73%) или наряд №(27%)',
+    warning: '',
+    // warning: 'Анализ оперативной обстановки: рекомендуется отправить на происшествие наряд №5 (73%) или наряд №(27%)',
     //warning: 'В отдел полиции обратился(лась) гр. Попов Даниил Денисович с заявлением о том, что 24.07.2021 года примерно в 10:00 часов неизвестное лицо совершило угон принадлежащей ему автомашины Шкода р/з Х 291 ХУ с придомовой территории по адресу: Воронеж, Кольцовская 12. Стоимость автомашины 550 000рублей',
     predSostav: '',
+    recognized: '',
     predSostavAnalyze: false,
     crime: {
         fio: '',
@@ -107,6 +110,12 @@ export const AppReducer = (state = initialState, action) => {
             }
         }
 
+        case RECOGNIZED: {
+            return {
+                ...state, recognized: action.result
+            }
+        }
+
         default :
             return state
     }
@@ -156,4 +165,27 @@ export const setPredSostav = (text) => {
     return {type: PREDSOSTAV, text}
 }
 
+export const sendWebCam = (image) => async (dispatch, getState) => {
 
+    // let response = await fetch('https://server-hacaton.qpuzzle.ru:9000', {
+    //     method: 'POST',
+        // headers: {
+        //     'Content-Type': 'application/json;charset=utf-8'
+        // },
+        // body: JSON.stringify('111')
+    // });
+
+    Promise.all([
+        ApiSendImage(image)
+    ]).then(([result]) => {
+            dispatch({type: RECOGNIZED, result})
+        }
+    )
+
+
+}
+
+const ApiSendImage = async (image) => {
+    //return Promise.reject()
+    return await nodejsApi.sendImage(image)
+}

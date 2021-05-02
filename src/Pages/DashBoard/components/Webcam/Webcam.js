@@ -36,8 +36,8 @@ const Webcam = (props) => {
 
 
         const loadModels = async () => {
+            // startVideo()
             const MODEL_URL = process.env.PUBLIC_URL + '/facesApi/models';
-            //startVideo()
             Promise.all([
                 faceApi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                 faceApi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -75,7 +75,7 @@ const Webcam = (props) => {
                 console.log(results)
             });
         }
-    }, 3000);
+    }, 1000);
 
     const startVideo = () => {
         console.log('Старт')

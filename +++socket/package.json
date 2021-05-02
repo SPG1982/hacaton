@@ -11,9 +11,9 @@
     "uuid": "^8.1.0"
   },
   "scripts": {
-    "socket": "nodemon +server-socket.js",
+    "test": "nodemon test.js",
     "socketAll": "nodemon server-socket-all.js",
-    "peerjs": "nodemon +server-peer.js"
+    "---peerjs": "nodemon ---server-peer.js"
   },
   "browserslist": {
     "production": [

@@ -9,7 +9,7 @@ let https = require('https');
 let server = https.createServer({
     key: fs.readFileSync('./user.txt'),
     cert: fs.readFileSync('./server.txt'),
-    ca: fs.readFileSync('./ca.txt'),
+    // ca: fs.readFileSync('./ca.txt'),
     requestCert: false,
     rejectUnauthorized: false
 }, app);
@@ -18,16 +18,36 @@ const socket = require("socket.io");
 const io = socket(server);
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    const corsWhitelist = [
+        'https://localhost:3000',
+        'https://hacaton.qpuzzle.ru'
+    ];
+    if (corsWhitelist.indexOf(req.headers.origin) !== -1) {
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.header('Access-Control-Allow-Credentials', true);
+    }
     next();
-
     app.options('*', (req, res) => {
         res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
         res.send();
     });
 });
+
+
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+    console.log(req.params)
+    // res.redirect(`/1`)
+  })
+
+  app.post('/', (req, res) => {
+    res.send('Hello World!')
+    console.log(req.params)
+    // res.redirect(`/1`)
+  })
 
 const users = {};
 const sockets = {};
@@ -44,6 +64,7 @@ io.on('connection', socket => {
 
     socket.on('CRIME', ({ text }, callback) => {
         //callback(X);
+        console.log(text)
         socket.broadcast.emit('BROADCAST:CRIME', { 'text': text });
     });
 
@@ -114,3 +135,5 @@ io.on('connection', socket => {
 });
 
 server.listen(9000, () => console.log('server is running on port 9000'));
+
+//docker run -t -i -p 5000:5000 -v F:/Docker/osrm:/data osrm/osrm-backend osrm-routed /data/1.osrm
