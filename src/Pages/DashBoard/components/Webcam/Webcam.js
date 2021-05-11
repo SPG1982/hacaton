@@ -173,7 +173,8 @@ const Webcam = (props) => {
 
 
 function loadLabeledImages() {
-    const labels = ['Smagin', 'Shestakov', 'Pahomova', 'Sarkisov', 'Efimov', 'Popov']
+    //const labels = ['Smagin', 'Shestakov', 'Pahomova', 'Sarkisov', 'Efimov', 'Popov']
+    const labels = ['Smagin', 'Efimov']
     return Promise.all(
         labels.map(async label => {
             let descriptions = [];

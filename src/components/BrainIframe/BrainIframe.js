@@ -29,7 +29,7 @@ const BrainIframe = (props) => {
 
     useEffect(() => {
         async function loadTexts() {
-            const crimes = ['orkaz', 'theft', 'grabej', 'ugon']
+            const crimes = ['orkaz', 'theft', 'grabej', 'ugon', 'razboi']
 
             const fetchText = (crime, i) => fetch(process.env.PUBLIC_URL + '/texts/' + crime + '/' + i + '.txt')
                 .then((response) => {
