@@ -59,6 +59,7 @@ body {
     display: flex;
     justify-content: center;
     position: relative;
+    padding: 0px;
 }
 
 .resTF .images li {

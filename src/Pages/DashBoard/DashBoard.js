@@ -74,7 +74,7 @@ const Container = (props) => {
                 <LeftSidebar {...props}/>
                 <Layout>
                     <Content style={{margin: '10px 10px 10px 10px'}}>
-                        <DashBoard {...props}/>
+                        {/*<DashBoard {...props}/>*/}
                     </Content>
                 </Layout>
             </Layout>

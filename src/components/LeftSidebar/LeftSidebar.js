@@ -42,15 +42,15 @@ const LeftSidebar = (props) => {
                     <Menu.Item key="/police" icon={<GlobalOutlined />}>
                         <Link to="/police">Дежурная часть</Link>
                     </Menu.Item>
-                    {/*<Menu.Item key="/tf" icon={<GlobalOutlined />}>*/}
-                    {/*    <Link to="/tf">+++TF</Link>*/}
-                    {/*</Menu.Item>*/}
-                    {/*<Menu.Item key="/brain" icon={<GlobalOutlined />}>*/}
-                    {/*    <Link to="/brain">+Brain.js+</Link>*/}
-                    {/*</Menu.Item>*/}
-                    {/*<Menu.Item key="/zoom" icon={<GlobalOutlined />}>*/}
-                    {/*    <Link to="/zoom">+Zoom+</Link>*/}
-                    {/*/!*</Menu.Item>*!/*/}
+                    <Menu.Item key="/tf" icon={<GlobalOutlined />}>
+                        <Link to="/tf">+++TF</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/brain" icon={<GlobalOutlined />}>
+                        <Link to="/brain">+Brain.js+</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/zoom" icon={<GlobalOutlined />}>
+                        <Link to="/zoom">+Zoom+</Link>
+                    </Menu.Item>
                     <Menu.Item key="/test" icon={<GlobalOutlined />}>
                         <Link to="/test">+Test+</Link>
                     </Menu.Item>

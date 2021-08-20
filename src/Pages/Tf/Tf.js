@@ -27,7 +27,8 @@ function Tf() {
     useEffect(() => {
         classifier = ml5.imageClassifier(MODEL_URL + "/model.json", () => {
             navigator.mediaDevices
-                .getUserMedia({ video: true, audio: false })
+                // .getUserMedia({ video: true, audio: false })
+                .getUserMedia({video: { facingMode: 'environment' } , audio: false })
                 .then((stream) => {
                     videoRef.current.srcObject = stream;
                     videoRef.current.play();
@@ -70,25 +71,25 @@ function Tf() {
                     <video
                         ref={videoRef}
                         style={{ transform: "scale(-1, 1)" }}
-                        width="600"
-                        height="400"
+                        width="100%"
+                        // height="400"
                     />
                     {loaded && (
                         <button onClick={() => toggle()}>
-                            {start ? "Stop" : "Start"}
+                            {start ? "СТОП" : "СТАРТ"}
                         </button>
                     )}
                 </div>
-                {result.length > 0 && (
-                    <div>
-                        {/*{console.log(result)}*/}
-                        <Chart data={result[0]} />
-                    </div>
-                )}
             </div>
             {result.length > 0 && (
+                <div>
+                    {/*{console.log(result)}*/}
+                    <Chart data={result[0]} />
+                </div>
+            )}
+            {result.length > 0 && (
                 <div className="resTF">
-                    <Images data={result} />
+                    {/*<Images data={result} />*/}
                 </div>
             )}
         </div>

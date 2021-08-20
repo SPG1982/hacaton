@@ -9,6 +9,7 @@ const Images = (props) => {
 
   return (
     <>
+
       <ul className="images">
         {sortedLabels.map((label) => (
           <li key={label}>
